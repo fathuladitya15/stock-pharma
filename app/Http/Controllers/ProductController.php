@@ -133,6 +133,7 @@ class ProductController extends Controller
             'unit'             => 'required|string|max:100',
             'stock'            => 'required|integer|min:0',
             'min_stock'        => 'required|integer|min:0',
+            'selling_price'    => 'required',
             'lead_time'        => 'required|integer|min:1',
             'average_demand'   => 'required|integer|min:1',
             'ordering_cost'    => 'nullable|integer|min:1',
@@ -152,6 +153,7 @@ class ProductController extends Controller
             $product->unit           = $request->unit;
             $product->stock          = $request->stock;
             $product->min_stock      = $request->min_stock;
+            $product->selling_price  = $request->selling_price;
             $product->lead_time      = $request->lead_time;
             $product->category_id    = $request->category_id;
             $product->average_demand = $request->average_demand;
@@ -174,6 +176,7 @@ class ProductController extends Controller
             'unit'             => 'required|string|max:100',
             'stock'            => 'required|integer|min:0',
             'min_stock'        => 'required|integer|min:0',
+            'selling_price'    => 'required',
             'lead_time'        => 'required|integer|min:1',
             'average_demand'   => 'required|integer|min:1',
             'ordering_cost'    => 'nullable|integer|min:1',
@@ -194,6 +197,7 @@ class ProductController extends Controller
             $product->stock          = $request->stock;
             $product->min_stock      = $request->min_stock;
             $product->lead_time      = $request->lead_time;
+            $product->selling_price      = $request->selling_price;
             $product->category_id    = $request->category_id;
             $product->average_demand = $request->average_demand;
             $product->ordering_cost         = $request->ordering_cost;
@@ -210,6 +214,7 @@ class ProductController extends Controller
     function show($id) {
         try {
             $data = Products::find($id);
+            $data->selling_price = (int)$data->selling_price;
             $category = Categories::all();
             return response()->json(['data' => $data,'category' => $category]);
         } catch (\Throwable $th) {
@@ -229,6 +234,16 @@ class ProductController extends Controller
             DB::rollBack();
             return response()->json(['message' => "Something wrong...",'title' => "Error",'log' => $th->getMessage],422);
         }
+    }
+
+    function search(Request $request) {
+        $search = $request->input('q');
+
+        $products = Products::where('name', 'like', "%{$search}%")
+            ->orWhere('product_code', 'like', "%{$search}%")
+            ->get();
+
+        return response()->json($products);
     }
 
 }

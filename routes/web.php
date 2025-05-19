@@ -8,6 +8,7 @@ use App\Http\Controllers\POQController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,14 @@ Auth::routes();
 Route::middleware(['auth'])->group(function ()  {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    Route::prefix('sales')->group(function() {
+        Route::get('/',[SalesController::class, 'index'])->name('sales');
+        Route::get('data',[SalesController::class, 'data'])->name('sales.data');
+        Route::get('show/{id}',[SalesController::class, 'show'])->name('sales.show');
+        Route::post('export',[SalesController::class, 'export'])->name('sales.export');
+        Route::post('save',[SalesController::class, 'store'])->name('sales.store');
+    });
+
     Route::middleware(['role:admin|staff_gudang'])->group(function() {
         Route::prefix('products')->group(function ()  {
             Route::get('/', [ProductController::class, 'index'])->name('product');
@@ -37,6 +46,8 @@ Route::middleware(['auth'])->group(function ()  {
             Route::get('show/{id}',[ProductController::class,'show'])->name('product.show');
             Route::post('edit/{id}',[ProductController::class,'edit'])->name('product.edit');
             Route::delete('delete/{id}',[ProductController::class,'delete'])->name('product.delete');
+
+            Route::get('search', [ProductController::class, 'search'])->name('product.search');
 
             Route::prefix('category')->group(function() {
                 Route::get('/', [ProductController::class, 'category'])->name('category.product');
@@ -62,6 +73,7 @@ Route::middleware(['auth'])->group(function ()  {
             Route::get('/data',[PurchaseOrderController::class,'data'])->name('purchase.order.data');
             Route::post('/save',[PurchaseOrderController::class,'store'])->name('purchase.order.save');
             Route::get('/show/{id}',[PurchaseOrderController::class,'show'])->name('purchase.order.show');
+            Route::post('export',[PurchaseOrderController::class, 'export'])->name('purchase.order.export');
             Route::post('/update/{id}',[PurchaseOrderController::class,'update'])->name('purchase.order.update');
             Route::delete('/delete/{id}',[PurchaseOrderController::class,'delete'])->name('purchase.order.delete');
         });

@@ -85,6 +85,7 @@
                             </div>
                             <div class="my-4 d-flex justify-content-center align-items-center copyright-text">
                                 <p>Copyright &copy; 2025 StockPharma</p>
+
                             </div>
                         </div>
                     </div>

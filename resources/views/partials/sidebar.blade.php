@@ -42,7 +42,16 @@
                         <li class="{{ menuActive(['suppliers']) }}">
                             <a href="{{ route('suppliers') }}" class="{{ menuActive(['suppliers']) }}"><i class="ti ti-archive fs-16 me-2"></i><span>Suplliers</span></a>
                         </li>
-                        <li class="{{ menuActive(['purchase.order']) }}">
+
+                    </ul>
+                </li>
+                <li class="submenu-open">
+                    <h6 class="submenu-hdr">Sales & Purchase</h6>
+                    <ul>
+                        <li class="{{ menuActive(['sales']) }}">
+                            <a href="{{ route('sales') }}"><i class="ti ti-shopping-bag fs-16 me-2"></i><span>Sales</span></a>
+                        </li>
+                         <li class="{{ menuActive(['purchase.order']) }}">
                             <a href="{{ route('purchase.order') }}" class="{{ menuActive(['purchase.order']) }}">
                                 <i class="ti ti-shopping-bag fs-16 me-2"></i><span>Purchase Order</span>
                             </a>

@@ -12,6 +12,9 @@
         </div>
     </div>
     <ul class="table-top-head">
+         <li>
+            <a data-bs-toggle="tooltip" data-bs-placement="top" class="import-excel" title="Excel"><img src="assets/img/icons/excel.svg" alt="img"></a>
+        </li>
         <li>
             <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i class="ti ti-refresh"></i></a>
         </li>
@@ -202,6 +205,40 @@
     </div>
 </div>
 
+<!-- import modal -->
+<div class="modal fade" id="import-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="page-title">
+                    <h4>Export Report Purchase Order</h4>
+                </div>
+                <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="exportForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Start date<span class="text-danger ms-1">*</span></label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">End date<span class="text-danger ms-1">*</span></label>
+                        <input type="date" class="form-control" name="end_date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Export</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 @endsection
 
@@ -212,6 +249,8 @@
     var url_edit    = "{{ route('purchase.order.update',':id') }}";
     var url_delete  = "{{ route('purchase.order.delete',':id') }}";
     var role        = "{{ auth()->user()->role }}";
+    var url_export  = "{{ route('purchase.order.export') }}";
+
 </script>
     <script>
         $(document).ready(function() {
@@ -486,6 +525,58 @@
 
             $(document).on('click', '.remove-product', function () {
                 $(this).closest('tr').remove();
+            });
+
+            $(document).on('click','.import-excel',function(e) {
+                $("#import-modal").modal('show');
+            });
+
+            $('#exportForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let formData = form.serialize();
+
+                $.ajax({
+                    url: url_export,
+                    method: 'POST',
+                    data: formData,
+                    xhrFields: {
+                        responseType: 'blob' // Penting agar bisa download file biner
+                    },
+                    beforeSend: function() {
+                        showLoadingAlert();
+                    },
+                    success: function(blob, status, xhr) {
+                        // Ambil nama file dari header Content-Disposition
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        let filename = "report.xlsx";
+
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Buat link unduhan dan klik otomatis
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+
+                        showAlert('File downloaded successfully', 'Success', 'success');
+                        $("#import-modal").modal('hide');
+                    },
+                    error: function(xhr) {
+                        const res = xhr.responseJSON;
+                        showAlert(res?.message || 'An error occurred during export.', 'Error', 'error');
+                    }
+                });
             });
 
         });

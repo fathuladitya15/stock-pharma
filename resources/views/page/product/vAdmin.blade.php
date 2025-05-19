@@ -103,6 +103,10 @@
                         <input type="number" class="form-control" name="min_stock" required placeholder="Minimum stok sebelum reorder">
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Selling Price<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="selling_price" required placeholder="selling price">
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Lead Time<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" name="lead_time" required placeholder="Order lead time (days)">
                     </div>
@@ -169,6 +173,10 @@
                     <div class="mb-3">
                         <label class="form-label">Min Stock<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" id="min_stock" name="min_stock" required placeholder="Minimum stok sebelum reorder">
+                    </div>
+                     <div class="mb-3">
+                        <label class="form-label">Selling Price<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="selling_price" id="selling_price" required placeholder="selling price">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Lead Time<span class="text-danger ms-1">*</span></label>
@@ -322,6 +330,7 @@
                         $("#ordering_cost").val(data.ordering_cost);
                         $("#holding_cost_percent").val(data.holding_cost_percent);
                         $("#lead_time").val(data.lead_time);
+                        $("#selling_price").val(data.selling_price);
 
                         // Kosongkan opsi lama di select category
                         $('#category_id').empty();

@@ -12,6 +12,8 @@ use App\Models\PurchaseOrderItem;
 use App\Models\Suppliers;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PurchaseExport;
 
 class PurchaseOrderController extends Controller
 {
@@ -171,7 +173,6 @@ class PurchaseOrderController extends Controller
         }
     }
 
-
     public function delete($id)
     {
         DB::beginTransaction();
@@ -184,6 +185,19 @@ class PurchaseOrderController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['message' => "Something wrong...",'title' => "Error",'log' => $th->getMessage],422);
+        }
+    }
+
+    public function export(Request $request) {
+        try {
+            $start      = $request->start_date;
+            $end        = $request->end_date;
+            $filename   = "PO-REPORT-".now()->format('Ymd').'.xlsx';
+            return Excel::download(new PurchaseExport($start,$end), $filename);
+            // Tambahkan header agar Content-Disposition bisa dibaca di JavaScript
+            $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition');
+        } catch (\Exception $th) {
+            return response()->json(['message' => "Something wrong ...",'title' => "Error",'log' => $th],422);
         }
     }
 }
