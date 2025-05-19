@@ -1,11 +1,11 @@
 @extends('vMaster')
-@section('title','Suppliers')
+@section('title','User')
 @section('content')
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Suppliers List</h4>
-            <h6>Manage your suppliers</h6>
+            <h4 class="fw-bold">Users List</h4>
+            <h6>Manage your Users</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -14,7 +14,7 @@
         </li>
     </ul>
     <div class="page-btn">
-        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Suppliers</a>
+        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Users</a>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
                     <tr>
                         <th>No </th>
                         <th>Name</th>
-                        <th>Contact</th>
+                        <th>Role</th>
                         <th>Email</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -54,34 +54,40 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Add Suppliers</h4>
+                    <h4>Add Users</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('suppliers.save') }}" id="form_add">
+            <form action="{{ route('users.save') }}" id="form_add">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="name" required placeholder="Name Suppliers">
+                        <input type="text" class="form-control" name="name" required placeholder="Name users">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Contact<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="contact" required placeholder="Contact Suppliers">
+                        <label class="form-label">Role<span class="text-danger ms-1">*</span></label>
+                        <select name="role" class="form-control" required>
+                            <option value="">-- Select Role --</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="staff_gudang">Staff Gudang</option>
+                            <option value="supplier">Supplier</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email<span class="text-danger ms-1">*</span></label>
                         <input type="email" class="form-control" name="email" required placeholder="mail@example.com">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Address<span class="text-danger ms-1">*</span></label>
-                        <textarea name="address" cols="30" rows="10" class="form-control" required></textarea>
+                        <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
+                        <input type="password" class="form-control" name="password" required placeholder="*********">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Suppliers</button>
+                        <button type="submit" class="btn btn-primary">Add users</button>
                     </div>
                 </div>
             </form>
@@ -95,7 +101,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Edit Supplier</h4>
+                    <h4>Edit User</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -106,39 +112,43 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" required placeholder="Name Suppliers">
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Name users">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contact<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="contact" name="contact" required placeholder="Contact Suppliers">
+                   <div class="mb-3">
+                        <label class="form-label">Role<span class="text-danger ms-1">*</span></label>
+                        <select name="role" id="role" class="form-control" required>
+                            <option value="">-- Select Role --</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="staff_gudang">Staff Gudang</option>
+                            <option value="supplier">Supplier</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email<span class="text-danger ms-1">*</span></label>
                         <input type="email" class="form-control" id="email" name="email" required placeholder="mail@example.com">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Address<span class="text-danger ms-1">*</span></label>
-                        <textarea name="address" id="address" cols="30" rows="10" class="form-control" required></textarea>
+                     <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password"  placeholder="*********">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Suppliers</button>
+                    <button type="submit" class="btn btn-primary">Update users</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 @endsection
 
 @push('js')
 <script>
-    var url            = "{{ route('suppliers.data') }}";
-    var url_show       = "{{ route('suppliers.show',':id') }}";
-    var url_update     = "{{ route('suppliers.update',':id') }}";
-    var url_delete     = "{{ route('suppliers.delete',':id') }}";
+    var url            = "{{ route('users.data') }}";
+    var url_show       = "{{ route('users.show',':id') }}";
+    var url_update     = "{{ route('users.update',':id') }}";
+    var url_delete     = "{{ route('users.delete',':id') }}";
 </script>
 <script>
     $(document).ready(function() {
@@ -157,8 +167,8 @@
                     name: 'name',
                 },
                 {
-                    data: 'contact',
-                    name: 'contact',
+                    data: 'role',
+                    name: 'role',
                 },
                 {
                     data: 'email',
@@ -240,9 +250,8 @@
                     swal.close();
                     $("#edit-modal").modal("show");
                     $("#name").val(data.name);
-                    $("#contact").val(data.contact);
+                    $("#role").val(data.role);
                     $("#email").val(data.email);
-                    $("#address").val(data.address);
                     $("#form_edit").attr('action',update);
                 },error : function(xhr) {
                     var message = xhr.responseJSON.message;
@@ -257,7 +266,7 @@
             var url = $(this).attr('action');
             $.ajax({
                 url : url,
-                type : "POST",
+                type : "PUT",
                 data : $(this).serialize(),
                 beforeSend: function() {
                     showLoadingAlert();
@@ -281,7 +290,7 @@
             var id = $(this).data('id');
             var url = url_delete.replace(":id",id);
             Swal.fire({
-                title: "Delete Supplier?",
+                title: "Delete User?",
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 width: '300px', // default-nya 500px

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,16 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function ()  {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    Route::middleware(['role:admin'])->group(function() {
+        Route::prefix('users')->group(function() {
+            Route::get('/', [UserController::class, 'index'])->name('users');
+            Route::get('/data', [UserController::class, 'fetchUsers'])->name('users.data');
+            Route::get('/show/{id}', [UserController::class, 'show'])->name('users.show');
+            Route::post('/save', [UserController::class, 'store'])->name('users.save');
+            Route::put('/update/{id}', [UserController::class, 'update'])->name('users.update');
+            Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
+        });
+    });
 
 
     Route::middleware(['role:admin|staff_gudang'])->group(function() {

@@ -42,7 +42,9 @@
                         <li class="{{ menuActive(['suppliers']) }}">
                             <a href="{{ route('suppliers') }}" class="{{ menuActive(['suppliers']) }}"><i class="ti ti-archive fs-16 me-2"></i><span>Suplliers</span></a>
                         </li>
-
+                         <li class="{{ menuActive(['users']) }}">
+                            <a href="{{ route('users') }}" class="{{ menuActive(['users']) }}"><i class="ti ti-user-edit fs-16 me-2"></i><span>Users</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li class="submenu-open">
