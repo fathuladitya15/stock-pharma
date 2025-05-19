@@ -183,7 +183,7 @@
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img src="assets/img/icons/pdf.svg" alt="img"></a>
                     </li>
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img src="assets/img/icons/printer.svg" alt="img"></a>
+                        <a class="print" data-bs-toggle="tooltip" data-bs-placement="top" data-id="" title="Pdf" target="_blank"><img src="assets/img/icons/printer.svg" alt="img"></a>
                     </li>
                 </ul>
             </div>
@@ -292,6 +292,7 @@
     var url_data    = "{{ route('sales.data') }}";
     var url_show    = "{{ route('sales.show',':id') }}";
     var url_export  = "{{ route('sales.export') }}";
+    var url_print   = "{{ route('sales.print',':id') }}";
 </script>
 <script>
     $(document).ready(function() {
@@ -501,6 +502,8 @@
                     showLoadingAlert();
                 },success: function(response) {
                     var data = response.data;
+                    var uPrint = url_print.replace(':id',id);
+                    $(".print").attr('href',uPrint);
                     $("#invoice_number").html(data.invoice_number);
                     $("#transaction_date").html(data.transaction_date);
 

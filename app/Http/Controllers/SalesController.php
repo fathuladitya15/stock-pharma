@@ -188,4 +188,20 @@ class SalesController extends Controller
         }
     }
 
+    function print($id) {
+        try {
+            $sales = Sales::with('details.product')->find($id);
+            foreach ($sales->details as $detail) {
+                $detail->price      = "Rp " . number_format($detail->price, 2, ',', '.');
+                $detail->subtotal   = "Rp " . number_format($detail->subtotal, 2, ',', '.');
+            }
+            $sales->total_amount    = "Rp ".number_format($sales->total_amount,2,',','.');
+            $sales->amount_paid     = "Rp ".number_format($sales->amount_paid,2,',','.');
+            $sales->change          = "Rp ".number_format($sales->change,2,',','.');
+            return view('page.sales.invoice',compact('sales'));
+        } catch (\Throwable $th) {
+            return abort(500);
+        }
+    }
+
 }

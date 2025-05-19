@@ -30,13 +30,7 @@ Auth::routes();
 Route::middleware(['auth'])->group(function ()  {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::prefix('sales')->group(function() {
-        Route::get('/',[SalesController::class, 'index'])->name('sales');
-        Route::get('data',[SalesController::class, 'data'])->name('sales.data');
-        Route::get('show/{id}',[SalesController::class, 'show'])->name('sales.show');
-        Route::post('export',[SalesController::class, 'export'])->name('sales.export');
-        Route::post('save',[SalesController::class, 'store'])->name('sales.store');
-    });
+
 
     Route::middleware(['role:admin|staff_gudang'])->group(function() {
         Route::prefix('products')->group(function ()  {
@@ -65,6 +59,14 @@ Route::middleware(['auth'])->group(function ()  {
             Route::get('/show/{id}',[SuppliersController::class,'show'])->name('suppliers.show');
             Route::post('/update/{id}',[SuppliersController::class,'update'])->name('suppliers.update');
             Route::delete('/delete/{id}',[SuppliersController::class,'delete'])->name('suppliers.delete');
+        });
+        Route::prefix('sales')->group(function() {
+            Route::get('/',[SalesController::class, 'index'])->name('sales');
+            Route::get('data',[SalesController::class, 'data'])->name('sales.data');
+            Route::get('show/{id}',[SalesController::class, 'show'])->name('sales.show');
+            Route::post('export',[SalesController::class, 'export'])->name('sales.export');
+            Route::post('save',[SalesController::class, 'store'])->name('sales.store');
+            Route::get('print/{id}',[SalesController::class, 'print'])->name('sales.print');
         });
     });
     Route::middleware(['role:admin|staff_gudang|supplier'])->group(function ()  {
