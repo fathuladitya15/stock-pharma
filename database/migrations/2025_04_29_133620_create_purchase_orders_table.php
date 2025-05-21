@@ -15,8 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('po_number')->unique();
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('order_date');
-            $table->enum('status', ['draft', 'sent', 'received', 'cancelled'])->default('draft');
+            $table->enum('status', [
+                'draft',       // Admin membuat tapi belum dikirim
+                'pending',     // Menunggu dikirim
+                'sent',        // Telah dikirim ke supplier
+                'confirmed',   // Dikonfirmasi oleh supplier
+                'processing',  // Sedang diproses oleh supplier
+                'shipped',     // Telah dikirim oleh supplier
+                'received',    // Diterima oleh admin/gudang
+                'completed',   // Selesai
+                'cancelled',   // Jika dibatalkan
+            ])->default('draft');
             $table->text('note')->nullable();
             $table->timestamps();
         });

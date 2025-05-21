@@ -33,8 +33,12 @@ class HomeController extends Controller
         if ($role == 'supplier') {
             $email         = $user->email;
             $suppllier     = Suppliers::where('email',$email)->first();
+            $POwait        = PurchaseOrder::where('status','sent')->where('supplier_id',$suppllier->id)->count();
+            $POshipped     = PurchaseOrder::where('status','shipped')->where('supplier_id',$suppllier->id)->count();
+            $POcomplete    = PurchaseOrder::where('status','completed')->where('supplier_id',$suppllier->id)->count();
+            $POcanceled    = PurchaseOrder::where('status','cancelled')->where('supplier_id',$suppllier->id)->count();
             $totalPurchase = PurchaseOrder::where('supplier_id',$suppllier->id)->count();
-            return view('page.dashboard.vSupplier',compact('totalPurchase'));
+            return view('page.dashboard.vSupplier',compact('totalPurchase','POwait','POshipped','POcomplete','POcanceled'));
         }else {
             $countProduct   =   Products::count();
             $totalStock     =   Products::sum('stock');

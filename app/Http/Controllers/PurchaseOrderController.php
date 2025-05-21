@@ -14,17 +14,25 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PurchaseExport;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseOrderController extends Controller
 {
     function __construct(){
-        $this->middleware('auth');
+        $this->middleware(['auth']);
+        $this->middleware(['role:admin|staff_gudang|supplier']);
     }
 
     function index() {
         $suppliers = Suppliers::orderBy('name','ASC')->get();
         $products  = Products::all();
-        return view('page.purchase.index',compact('suppliers','products'));
+        $user      = Auth::user();
+
+        if ($user->role == 'supplier') {
+            return view('page.purchase.vSupplier',compact('suppliers','products'));
+        }else {
+            return view('page.purchase.index',compact('suppliers','products'));
+        }
     }
 
     function data(Request $request) {
@@ -32,7 +40,7 @@ class PurchaseOrderController extends Controller
         $role   =   $user->role;
 
         if ($role == 'supplier') {
-            $supplier   =   Suppliers::where('email',$user->email)->first();
+            $supplier   =   Suppliers::where('user_id',$user->id)->first();
             $po         =   PurchaseOrder::where('supplier_id',$supplier->id)->get();
         }else {
             $po     =   PurchaseOrder::orderBy('created_at','desc')->get();
@@ -55,7 +63,67 @@ class PurchaseOrderController extends Controller
         ->addColumn('order_date',function($row) {
             return Carbon::parse($row->order_date)->format('d F Y');
         })
-        ->rawColumns(['checkbox'])
+        ->addColumn('status',function($row) use ($role) {
+            // Mapping status badge
+            $statusMap = [
+                'draft'      => ['label' => 'Draft', 'class' => 'badge badge-secondary'],
+                'pending'    => ['label' => 'Pending', 'class' => 'badge badge-warning'],
+                'sent'       => ['label' => 'Sent', 'class' => 'badge badge-info'],
+                'confirmed'  => ['label' => 'Confirmed', 'class' => 'badge badge-primary'],
+                'processing' => ['label' => 'Processing', 'class' => 'badge badge-warning'],
+                'shipped'    => ['label' => 'Shipped', 'class' => 'badge badge-info'],
+                'received'   => ['label' => 'Received', 'class' => 'badge badge-primary'],
+                'completed'  => ['label' => 'Completed', 'class' => 'badge badge-success'],
+                'cancelled'  => ['label' => 'Cancelled', 'class' => 'badge badge-danger'],
+            ];
+
+            $statusKey = $row->status;
+
+            // Masking untuk supplier melihat "sent" sebagai "Waiting"
+            if ($role === 'supplier' && $row->status === 'sent') {
+                $label = 'Waiting';
+                $class = 'badge badge-warning';
+            } else {
+                $label = $statusMap[$statusKey]['label'] ?? Str::title($statusKey);
+                $class = $statusMap[$statusKey]['class'] ?? 'badge badge-secondary';
+            }
+
+            return '<span class="'. $class .'">'. $label .'</span>';
+        })
+        ->addColumn('action',function($row) use ($role) {
+            $status    =   $row->status;
+            $edit      =   '<div class="edit-delete-action">
+                            <a class="me-2 edit-icon p-2 show_data" href="javascript:void(0)" data-id="'.$row->id.'">
+                                <i data-feather="eye" class="feather-eye"></i>
+                            </a>';
+
+            $delete     =   '<a class="p-2 delete" data-id="'.$row->id.'" href="javascript:void(0);">
+                                        <i data-feather="trash-2" class="feather-trash-2"></i>
+                                    </a>';
+            $complete   =   '<a class="p-2 complete" data-id="'.$row->id.'" href="javascript:void(0);">
+                                <i data-feather="check-square" class="feather-check-square"></i>
+                                </a>';
+            $show       =   '<a class="p-2" href="'.route('purchase.order.detail',$row->id).'" target="_BLANK" data-id="'.$row->id.'" href="javascript:void(0);">
+                                <i data-feather="eye" class="feather-eye"></i>
+                                </a>';
+            if ($role == 'supplier') {
+                $button = $edit;
+            }else {
+                if (in_array($status,['draft','sent'])) {
+                    $button = $edit.'&nbsp;'.$delete;
+                }else if (in_array($status,['confirmed','pending','processing','received','shipped'])) {
+                    $button = $edit.'&nbsp;'.$complete;
+                }
+                else if ($status == 'completed') {
+                    $button = $show;
+                }
+                else {
+                    $button = "";
+                }
+            }
+            return $button;
+        })
+        ->rawColumns(['checkbox','status','action'])
         ->make(true);
 
         return $table;
@@ -77,6 +145,7 @@ class PurchaseOrderController extends Controller
         DB::beginTransaction();
         try {
             $order = PurchaseOrder::create([
+                'user_id'   => Auth::id(),
                 'po_number' => 'PO-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4)),
                 'supplier_id' => $request->supplier_id,
                 'order_date' => $request->order_date,
@@ -131,7 +200,7 @@ class PurchaseOrderController extends Controller
 
         try {
             // Validasi input request
-            $validated = $request->validate([
+            $request->validate([
                 'supplier_id' => 'required|exists:suppliers,id',
                 'order_date'  => 'required|date',
                 'products'    => 'required|array',
@@ -144,6 +213,7 @@ class PurchaseOrderController extends Controller
             $purchaseOrder = PurchaseOrder::findOrFail($id);
             $purchaseOrder->supplier_id = $request->supplier_id;
             $purchaseOrder->order_date  = $request->order_date;
+            $purchaseOrder->status      = $request->status;
             $purchaseOrder->save(); // Simpan perubahan pada order utama
 
             // Hapus item lama
@@ -199,5 +269,31 @@ class PurchaseOrderController extends Controller
         } catch (\Exception $th) {
             return response()->json(['message' => "Something wrong ...",'title' => "Error",'log' => $th],422);
         }
+    }
+
+    public function update_status(Request $request, $id) {
+        DB::beginTransaction();
+        try {
+            $purchaseOrder = PurchaseOrder::findOrFail($id);
+            $purchaseOrder->status      = $request->status;
+            $purchaseOrder->save();
+            DB::commit();
+            return response()->json(['message' => 'Purchase order status has been updated.'], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Something went wrong while updating.',
+                'title'   => 'Error',
+                'log'     => $th->getMessage()
+            ], 422);
+        }
+    }
+
+    function detail($id) {
+        $data   =   PurchaseOrder::find($id);
+        $data->order_date = Carbon::parse($data->order_date)->format('l, d F Y');
+        $item   =   PurchaseOrderItem::with('product')->where('purchase_order_id',$id)->get();
+        $supplier = Suppliers::find($data->supplier_id);
+        return view('page.purchase.vDetail',compact('data','item','supplier'));
     }
 }

@@ -42,17 +42,22 @@
                         <li class="{{ menuActive(['suppliers']) }}">
                             <a href="{{ route('suppliers') }}" class="{{ menuActive(['suppliers']) }}"><i class="ti ti-archive fs-16 me-2"></i><span>Suplliers</span></a>
                         </li>
+                        @if(in_array(auth()->user()->role, ['admin']))
+
                          <li class="{{ menuActive(['users']) }}">
                             <a href="{{ route('users') }}" class="{{ menuActive(['users']) }}"><i class="ti ti-user-edit fs-16 me-2"></i><span>Users</span></a>
                         </li>
+                        @endif
                     </ul>
                 </li>
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Sales & Purchase</h6>
                     <ul>
+                        @if(in_array(auth()->user()->role, ['admin']))
                         <li class="{{ menuActive(['sales']) }}">
                             <a href="{{ route('sales') }}"><i class="ti ti-shopping-bag fs-16 me-2"></i><span>Sales</span></a>
                         </li>
+                        @endif
                          <li class="{{ menuActive(['purchase.order']) }}">
                             <a href="{{ route('purchase.order') }}" class="{{ menuActive(['purchase.order']) }}">
                                 <i class="ti ti-shopping-bag fs-16 me-2"></i><span>Purchase Order</span>

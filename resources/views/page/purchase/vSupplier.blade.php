@@ -12,19 +12,13 @@
         </div>
     </div>
     <ul class="table-top-head">
-         <li>
+         {{-- <li>
             <a data-bs-toggle="tooltip" data-bs-placement="top" class="import-excel" title="Excel"><img src="assets/img/icons/excel.svg" alt="img"></a>
-        </li>
+        </li> --}}
         <li>
             <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i class="ti ti-refresh"></i></a>
         </li>
     </ul>
-    @if (auth()->user()->role != 'supplier')
-        <div class="page-btn">
-            <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Create Purchase Order</a>
-        </div>
-
-    @endif
 </div>
 
 <!-- /product list -->
@@ -63,76 +57,6 @@
 </div>
 <!-- /product list -->
 
-
-
-<!-- add modal -->
-<div class="modal fade" id="add-modal">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="page-title">
-                    <h4>Create Purchase Order</h4>
-                </div>
-                <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="form_add"  action="{{ route('purchase.order.save') }}">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Suppliers<span class="text-danger ms-1">*</span></label>
-                        <select name="supplier_id" class="form-control" required>
-                            <option value="">-- Select Suppliers --</option>
-                            @foreach ($suppliers as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Order Date<span class="text-danger ms-1">*</span></label>
-                        <input type="date" class="form-control" name="order_date" required >
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Products</label>
-                        <table class="table table-bordered" id="product-table">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th><button type="button" class="btn btn-sm btn-success" id="add-product">+</button></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select name="products[0][product_id]" class="form-control" required>
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td><input type="number" name="products[0][quantity]" class="form-control" required></td>
-                                    <td><input type="number" name="products[0][price]" class="form-control" required step="0.01"></td>
-                                    <td><button type="button" class="btn btn-sm btn-danger remove-product">-</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Note<span class="text-danger ms-1"></span></label>
-                        <input type="text" class="form-control" name="note" >
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create purchase order</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- edit modal -->
 <div class="modal fade" id="edit-modal">
@@ -188,20 +112,22 @@
                         </table>
                     </div>
 
+
+
                     <div class="row">
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="mb-3">
                                 <label class="form-label">Note</label>
-                                <input type="text" class="form-control" name="note" id="note">
+                                <input type="text" class="form-control" name="note" id="note" disabled>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="draft">Draft</option>
-                                    <option value="sent">Sent</option>
-                                    <option value="canceled">Canceled</option>
+                                <label class="form-label">Status<span class="text-danger ms-1">*</span></label>
+                                <select name="status" id="status" class="form-control" required>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
                                 </select>
                             </div>
                         </div>
@@ -209,42 +135,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    @if (auth()->user()->role != 'supplier')
-                    <button type="submit" id="submit_update" class="btn btn-primary">Update Purchase Order</button>
-                    @endif
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- import modal -->
-<div class="modal fade" id="import-modal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="page-title">
-                    <h4>Export Report Purchase Order</h4>
-                </div>
-                <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" id="exportForm">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Start date<span class="text-danger ms-1">*</span></label>
-                        <input type="date" class="form-control" name="start_date" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">End date<span class="text-danger ms-1">*</span></label>
-                        <input type="date" class="form-control" name="end_date" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Export</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
                 </div>
             </form>
         </div>
@@ -259,18 +150,15 @@
 <script>
     var url         = "{{ route('purchase.order.data') }}";
     var url_show    = "{{ route('purchase.order.show',':id') }}";
-    var url_edit    = "{{ route('purchase.order.update',':id') }}";
+    var url_edit    = "{{ route('purchase.order.status',':id') }}";
     var url_delete  = "{{ route('purchase.order.delete',':id') }}";
     var role        = "{{ auth()->user()->role }}";
-    var url_status  = "{{ route('purchase.order.status',':id') }}";
     var url_export  = "{{ route('purchase.order.export') }}";
 
 </script>
     <script>
         $(document).ready(function() {
             let editRowIndex = 0; // Global untuk pelacakan index
-            const disabledStatuses = ['sent','processing', 'confirmed', 'completed', 'cancelled','shipped']; // contoh status yang disable
-
             var table = $("#table").dataTable({
                 ...defaultDatatableSettings,
                 processing: true,
@@ -308,6 +196,27 @@
                         name: 'action',
                         orderable: false,
                         searchable: false,
+                        render: function (data, type, row, meta) {
+
+                            let actions = `
+                                <div class="edit-delete-action">
+                                    <a class="me-2 edit-icon p-2 show_data" href="javascript:void(0)" data-id="${row.id}">
+                                        <i data-feather="eye" class="feather-eye"></i>
+                                    </a>
+                            `;
+
+                            // Tampilkan tombol delete hanya jika rolenya bukan 'suppliers'
+                            if (role !== 'supplier') {
+                                actions += `
+                                    <a class="p-2 delete" data-id="${row.id}" href="javascript:void(0);">
+                                        <i data-feather="trash-2" class="feather-trash-2"></i>
+                                    </a>
+                                `;
+                            }
+
+                            actions += `</div>`;
+                            return actions;
+                        }
                     },
                 ],
                 columnDefs: [
@@ -362,17 +271,9 @@
                         $("#form_edit").attr('action', url_update);
                         $("#order_date").val(data.order_date);
 
+                        $("#status").val(data.status);
 
-                        if (disabledStatuses.includes(data.status)) {
-                            $('#status').empty();
-                            $("#status").append('<option value="">'+data.status+'</option>');
-                            $("#status").attr('disabled', true);
-                            $("#submit_update").attr('disabled',true);
-                        } else {
-                            $("#status").val(data.status);
-                            $("#status").attr('disabled', false);
-                            $("#submit_update").attr('disabled',false);
-                        }
+                        // $("#status").attr('disabled',false);
 
 
                         // Reset & set supplier
@@ -401,13 +302,13 @@
                             let row = `
                                 <tr>
                                     <td>
-                                        <select name="products[${editRowIndex}][product_id]" class="form-control" required>
+                                        <select disabled name="products[${editRowIndex}][product_id]" class="form-control" required>
                                             ${options}
                                         </select>
                                     </td>
-                                    <td><input type="number" name="products[${editRowIndex}][quantity]" class="form-control" value="${item.quantity}" required></td>
-                                    <td><input type="number" name="products[${editRowIndex}][price]" class="form-control" value="${item.price}" required></td>
-                                    <td><button type="button" class="btn btn-sm btn-danger remove-product">-</button></td>
+                                    <td><input disabled type="number" name="products[${editRowIndex}][quantity]" class="form-control" value="${item.quantity}" required></td>
+                                    <td><input disabled type="number" name="products[${editRowIndex}][price]" class="form-control" value="${item.price}" required></td>
+                                    <td></td>
                                 </tr>
                             `;
                             tbody.append(row);
@@ -585,43 +486,6 @@
                         showAlert(res?.message || 'An error occurred during export.', 'Error', 'error');
                     }
                 });
-            });
-
-            $(document).on('click','.complete', function() {
-                var id = $(this).data('id');
-                var url = url_status.replace(':id',id);
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "Have you received the item?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, complete it!",
-                    width: '300px', // default-nya 500px
-                    customClass: {
-                      popup: 'custom-swal-size'
-                    },
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url : url,
-                            type : "POST",
-                            data : {status : 'completed'},
-                            beforeSend: function() {
-                                showLoadingAlert();
-                            },success: function(response) {
-                                var message  = response.message;
-                                showAlert(message,'Success','success');
-                            },error: function(xhr) {
-                                var messagae = xhr.responseJSON.message;
-                                showAlert(message,'Error','error');
-                            },complete: function() {
-                                table.DataTable().ajax.reload();s
-                            }
-                        });
-                    }
-                  });
             });
 
         });

@@ -18,7 +18,7 @@ class ProductController extends Controller
         $roles  =   $user->role;
         $category = Categories::orderBy('name')->get();
 
-        if ($roles == 'admin') {
+        if (in_array($roles,['admin','staff_gudang'])) {
             return view('page.product.vAdmin',compact('category'));
         }
         else {
@@ -30,7 +30,7 @@ class ProductController extends Controller
         $user       =   Auth::user();
         $roles      =   $user->role;
         $category   =   Categories::orderBy('name')->get();
-        if ($roles == 'admin') {
+        if (in_array($roles,['admin','staff_gudang'])) {
             return view('page.product.vAdminCategory',compact('category'));
         }
         else {

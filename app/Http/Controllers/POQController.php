@@ -45,7 +45,7 @@ class POQController extends Controller
             }
 
             // Ambil harga terakhir
-            $unitPrice = $this->getLatestUnitPrice($productId);
+            $unitPrice = $product->selling_price;
             if ($unitPrice <= 0) {
                 return response()->json(['message' => 'Product price is invalid'], 422);
             }
