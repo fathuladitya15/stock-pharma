@@ -44,8 +44,6 @@ Route::middleware(['auth'])->group(function ()  {
             Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
         });
     });
-
-
     Route::middleware(['role:admin|staff_gudang'])->group(function() {
         Route::prefix('products')->group(function ()  {
             Route::get('/', [ProductController::class, 'index'])->name('product');
@@ -105,7 +103,17 @@ Route::middleware(['auth'])->group(function ()  {
            Route::post('export',[POQController::class, 'export'])->name('poq.export');
         });
     });
+    Route::middleware(['role:manager'])->group(function () {
+        Route::prefix('report')->group(function ()  {
+            Route::get('sales',[SalesController::class, 'report'])->name('sales.report');
+            Route::post('search',[SalesController::class, 'report_search'])->name('sales.report.search');
+            Route::get('report-excel',[SalesController::class, 'excel'])->name('sales.report.excel');
 
+            Route::get('purchase-order',[PurchaseOrderController::class, 'report'])->name('purchase.order.report');
+            Route::post('purchase-order/search',[PurchaseOrderController::class, 'report_search'])->name('purchase.order.report.search');
+            Route::get('purchase-order/report-excel',[PurchaseOrderController::class, 'excel'])->name('purchase.order.report.excel');
+        });
+    });
     Route::prefix('profile')->group(function() {
         Route::get('/',[ProfileController::class,'index'])->name('profile');
         Route::post('update',[ProfileController::class, 'update'])->name('profile.update');

@@ -9,6 +9,7 @@ use App\Models\Sales;
 use App\Models\SalesDetail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SalesExport;
+use App\Models\Categories;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -16,7 +17,9 @@ class SalesController extends Controller
 {
     function __construct()
     {
-        $this->middleware(['auth','role:admin']);
+        $this->middleware(['auth']);
+        $this->middleware(['role:admin|manager']);
+
     }
 
     public function index() {
@@ -201,6 +204,84 @@ class SalesController extends Controller
             return view('page.sales.invoice',compact('sales'));
         } catch (\Throwable $th) {
             return abort(500);
+        }
+    }
+
+    public function report(Request $request) {
+
+        return view('page.sales.vReport');
+    }
+
+    function report_search(Request $request) {
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end   = Carbon::parse($request->end_date)->endOfDay();
+
+        $sales  =   SalesDetail::with(['product'])
+        ->whereBetween('created_at', [$start, $end])
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+        $result = [];
+        $grandTotal = 0;
+
+        foreach ($sales as $key) {
+            $category     =   Categories::find($key->product->category_id);
+            $total        =   $key->quantity * $key->price;
+            $result[] = [
+                'product_name'  => $key->product_name,
+                'product_code'  => $key->product->product_code,
+                'created_at'    => Carbon::parse($key->created_at)->format('l, d F Y'),
+                'category'      =>  $category->name ?? "",
+                'qty'           => $key->quantity,
+                'price'         => "Rp ". number_format($key->price,0,',','.'),
+                'total'         => "Rp ".number_format($total,0,',','.'),
+            ];
+            $grandTotal += $total;
+        }
+
+        return response()->json(['data' => $result, 'grand_total' => "Rp " . number_format($grandTotal, 0, ',', '.')]);
+
+    }
+
+
+    function excel(Request $request) {
+
+
+        try {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end   = Carbon::parse($request->end_date)->endOfDay();
+
+            $sales  =   SalesDetail::with(['product'])
+            ->whereBetween('created_at', [$start, $end])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+            $result = [];
+            $grandTotal = 0;
+
+            foreach ($sales as $key) {
+                $category     =   Categories::find($key->product->category_id);
+                $total        =   $key->quantity * $key->price;
+                $result[] = [
+                    'product_name'  => $key->product_name,
+                    'product_code'  => $key->product->product_code,
+                    'created_at'    => Carbon::parse($key->created_at)->format('l, d F Y'),
+                    'category'      =>  $category->name ?? "",
+                    'qty'           => $key->quantity,
+                    'price'         => "Rp ". number_format($key->price,0,',','.'),
+                    'total'         => "Rp ".number_format($total,0,',','.'),
+                ];
+                $grandTotal += $total;
+            }
+
+            $grandTotalToRP = "Rp " . number_format($grandTotal, 0, ',', '.');
+            $filename       = "Sales_Report_" . Carbon::now()->format('ymd_His');
+
+            return response()->view('page.sales.excel', compact('result','grandTotalToRP'))
+                ->header('Content-Type', 'application/vnd.ms-excel')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '.xls"');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => "Something wrong",'log' => $th->getMessage],422);
         }
     }
 

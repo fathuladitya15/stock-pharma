@@ -182,6 +182,7 @@
     <!-- Datetimepicker JS -->
     <script src="{{ asset('assets/js/moment.min.js') }}" type="4978796092b801b075e66d4e-text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}" type="4978796092b801b075e66d4e-text/javascript"></script>
+    <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}" type="ebd83bc71cf0988188c248e1-text/javascript"></script>
 
     <!-- Bootstrap Tagsinput JS -->
     <script src="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}" type="4978796092b801b075e66d4e-text/javascript"></script>

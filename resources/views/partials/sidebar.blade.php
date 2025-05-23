@@ -66,6 +66,26 @@
                     </ul>
                 </li>
                 @endif
+                @if (auth()->user()->role == 'manager')
+                 <li class="submenu-open">
+                    <h6 class="submenu-hdr">Reports</h6>
+                    <ul>
+                        <li class="{{ menuActive(['sales.report']) }}">
+                            <a href="{{ route('sales.report') }}" class="{{ menuActive(['sales.report']) }}">
+                                <i class="ti ti-chart-bar fs-16 me-2"></i>
+                                <span>Sales report</span>
+                            </a>
+                        </li>
+                        <li class="{{ menuActive('purchase.order.report') }}">
+                            <a href="{{ route('purchase.order.report') }}" class="{{ menuActive('purchase.order.report') }}">
+                                <i class="ti ti-chart-pie-2 fs-16 me-2"></i>
+                                <span>Purchase report</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                @endif
                 @if(in_array(auth()->user()->role, ['admin', 'manager']))
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Monitoring </h6>

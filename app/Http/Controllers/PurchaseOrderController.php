@@ -15,12 +15,13 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PurchaseExport;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Categories;
 
 class PurchaseOrderController extends Controller
 {
     function __construct(){
         $this->middleware(['auth']);
-        $this->middleware(['role:admin|staff_gudang|supplier']);
+        $this->middleware(['role:admin|staff_gudang|supplier|manager']);
     }
 
     function index() {
@@ -295,5 +296,90 @@ class PurchaseOrderController extends Controller
         $item   =   PurchaseOrderItem::with('product')->where('purchase_order_id',$id)->get();
         $supplier = Suppliers::find($data->supplier_id);
         return view('page.purchase.vDetail',compact('data','item','supplier'));
+    }
+
+    function report() {
+        return view('page.purchase.vReport');
+    }
+
+    function report_search(Request $request) {
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end   = Carbon::parse($request->end_date)->endOfDay();
+
+        $purchaseOrder = PurchaseOrder::whereBetween('order_date', [$start, $end])
+        ->orderBy('created_at', 'asc')->pluck('id')->toArray();
+
+        $purchaseOrderItem = PurchaseOrderItem::with('product')->whereIn('purchase_order_id',$purchaseOrder)->get();
+
+        $result = [];
+        $grandTotal = 0;
+        foreach ($purchaseOrderItem as $item) {
+            $purchaseOrderD = PurchaseOrder::find($item->purchase_order_id);
+            $category       = Categories::find($item->product->category_id);
+            $total          = $item->quantity * $item->price;
+            $result[] = [
+                'purchase_number'   => $purchaseOrderD->po_number,
+                'product_name'      => $item->product->name,
+                'product_code'      => $item->product->product_code,
+                'created_at'        => Carbon::parse($purchaseOrderD->order_date)->format('l, d F Y'),
+                'category'          => $category->name,
+                'qty'               => $item->quantity,
+                'price'             => "Rp ".number_format($item->price,0,',','.'),
+                'total'             => "Rp ".number_format($total,0,',','.'),
+            ];
+            $grandTotal += $total;
+        }
+
+        return response()->json(['data' => $result, 'grand_total' => "Rp " . number_format($grandTotal, 0, ',', '.')]);
+    }
+
+    function excel(Request $request) {
+
+
+        try {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end   = Carbon::parse($request->end_date)->endOfDay();
+
+
+            $purchaseOrder = PurchaseOrder::whereBetween('order_date', [$start, $end])
+            ->orderBy('created_at', 'asc')->pluck('id')->toArray();
+
+            $purchaseOrderItem = PurchaseOrderItem::with('product')->whereIn('purchase_order_id',$purchaseOrder)->get();
+
+            // $sales  =   SalesDetail::with(['product'])
+            // ->whereBetween('created_at', [$start, $end])
+            // ->orderBy('created_at', 'asc')
+            // ->get();
+
+
+            $result = [];
+            $grandTotal = 0;
+
+            foreach ($purchaseOrderItem as $item) {
+                 $purchaseOrderD = PurchaseOrder::find($item->purchase_order_id);
+                 $category       = Categories::find($item->product->category_id);
+                 $total          = $item->quantity * $item->price;
+                 $result[] = [
+                     'purchase_number'   => $purchaseOrderD->po_number,
+                     'product_name'      => $item->product->name,
+                     'product_code'      => $item->product->product_code,
+                     'created_at'        => Carbon::parse($purchaseOrderD->order_date)->format('l, d F Y'),
+                     'category'          => $category->name,
+                     'qty'               => $item->quantity,
+                     'price'             => "Rp ".number_format($item->price,0,',','.'),
+                     'total'             => "Rp ".number_format($total,0,',','.'),
+                 ];
+                 $grandTotal += $total;
+             }
+
+            $grandTotalToRP = "Rp " . number_format($grandTotal, 0, ',', '.');
+            $filename       = "Purchase_order_Report_" . Carbon::now()->format('ymd_His');
+
+            return response()->view('page.sales.excel', compact('result','grandTotalToRP'))
+                ->header('Content-Type', 'application/vnd.ms-excel')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '.xls"');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => "Something wrong",'log' => $th->getMessage],422);
+        }
     }
 }

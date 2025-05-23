@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('poqs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->float('average_demand');
-            $table->float('demand_per_year');
-            $table->float('ordering_cost');
-            $table->float('unit_price');
-            $table->float('holding_cost');
-            $table->float('eoq');
-            $table->float('poq');
+            $table->decimal('average_demand', 15, 2);
+            $table->decimal('demand_per_year',15, 2);
+            $table->decimal('ordering_cost', 15, 2);
+            $table->decimal('unit_price', 15, 2);
+            $table->decimal('holding_cost', 15, 2);
+            $table->decimal('eoq', 15, 2);
+            $table->decimal('poq', 15, 2);
             $table->foreignId('calculated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->text('notes')->nullable();
             $table->timestamps();
