@@ -23,6 +23,7 @@ class PurchaseExport implements FromCollection, WithMapping, WithHeadings
     public function collection()
     {
         return PurchaseOrder::with(['supplier', 'items'])
+            ->where('status','completed')
             ->whereBetween('created_at', [$this->startDate, $this->endDate])
             ->get();
     }

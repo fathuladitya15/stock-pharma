@@ -25,6 +25,21 @@
             </div>
         </div>
     </div>
+     <div class="col-xl-3 col-sm-6 col-12 d-flex">
+        <div class="card bg-secondary sale-widget flex-fill">
+            <div class="card-body d-flex align-items-center">
+                <span class="sale-icon bg-white text-secondary">
+                    <i class="fas fa-thumbs-up fs-24"></i>
+                </span>
+                <div class="ms-2">
+                    <p class="text-white mb-1">Order Confirmed</p>
+                    <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                        <h4 class="text-white">{{ $POconfirmed }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-xl-3 col-sm-6 col-12 d-flex">
         <div class="card bg-info sale-widget flex-fill">
             <div class="card-body d-flex align-items-center">

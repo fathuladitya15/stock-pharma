@@ -44,7 +44,7 @@ class PurchaseOrderController extends Controller
             $supplier   =   Suppliers::where('user_id',$user->id)->first();
             $po         =   PurchaseOrder::where('supplier_id',$supplier->id)->get();
         }else {
-            $po     =   PurchaseOrder::orderBy('created_at','desc')->get();
+            $po     =   PurchaseOrder::where('status','completed')->orderBy('created_at','desc')->get();
         }
 
         $table  = DataTables::of($po)
@@ -263,7 +263,7 @@ class PurchaseOrderController extends Controller
         try {
             $start      = $request->start_date;
             $end        = $request->end_date;
-            $filename   = "PO-REPORT-".now()->format('Ymd').'.xlsx';
+            $filename   = "PO_REPORT-".now()->format('Ymd').'.xlsx';
             return Excel::download(new PurchaseExport($start,$end), $filename);
             // Tambahkan header agar Content-Disposition bisa dibaca di JavaScript
             $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition');
@@ -303,11 +303,19 @@ class PurchaseOrderController extends Controller
     }
 
     function report_search(Request $request) {
+        $user  =   Auth::user();
         $start = Carbon::parse($request->start_date)->startOfDay();
         $end   = Carbon::parse($request->end_date)->endOfDay();
 
-        $purchaseOrder = PurchaseOrder::whereBetween('order_date', [$start, $end])
-        ->orderBy('created_at', 'asc')->pluck('id')->toArray();
+        if ($user->role == 'manager') {
+            $purchaseOrder = PurchaseOrder::whereBetween('order_date', [$start, $end])
+            ->where('status','completed')
+            ->orderBy('created_at', 'asc')->pluck('id')->toArray();
+        }else {
+            $purchaseOrder = PurchaseOrder::whereBetween('order_date', [$start, $end])
+            ->orderBy('created_at', 'asc')->pluck('id')->toArray();
+
+        }
 
         $purchaseOrderItem = PurchaseOrderItem::with('product')->whereIn('purchase_order_id',$purchaseOrder)->get();
 
