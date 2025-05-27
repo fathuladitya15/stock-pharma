@@ -29,8 +29,8 @@ class PoQReportExport implements FromCollection, WithMapping, WithHeadings
         return [
             $row->product->name ?? '-',
             $row->product->unit,
-            $row->average_demand,
-            $row->demand_per_year,
+            (int)$row->average_demand,
+            (int)$row->demand_per_year,
             'Rp ' . number_format($row->ordering_cost, 0, ',', '.'),
             'Rp ' . number_format($row->unit_price, 0, ',', '.'),
             'Rp ' . number_format($row->holding_cost, 0, ',', '.'),

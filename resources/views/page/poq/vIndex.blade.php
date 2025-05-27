@@ -222,6 +222,8 @@
                     var title = response.title;
                     showAlert(message,title,'success');
                     table.DataTable().ajax.reload();
+                    console.log(response);
+
                 },error : function(xhr) {
                     var message = xhr.responseJSON.message;
                     var title = xhr.responseJSON.title;

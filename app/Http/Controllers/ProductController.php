@@ -215,6 +215,8 @@ class ProductController extends Controller
         try {
             $data = Products::find($id);
             $data->selling_price = (int)$data->selling_price;
+            $data->ordering_cost = (int)$data->ordering_cost;
+            $data->holding_cost_percent = (int)$data->holding_cost_percent;
             $category = Categories::all();
             return response()->json(['data' => $data,'category' => $category]);
         } catch (\Throwable $th) {

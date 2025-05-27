@@ -38,56 +38,56 @@ class POQController extends Controller
                 return response()->json(['message' => 'Average demand must be more than 0'], 422);
             }
 
-            // Validasi ordering_cost
-            $S = $product->ordering_cost ?? 100000;
-            if ($S <= 0) {
-                return response()->json(['message' => 'Ordering cost is invalid'], 422);
+            $unitPrice  =   $product->selling_price ?? 0;
+
+            // Biaya Pemesanan (S)
+            $S  = $product->ordering_cost ?? 0;
+            $H  = $product->holding_cost_percent ?? 0;
+            $D  = $product->average_demand ?? 0;
+
+            // Calculate POQ
+            $TwoxS    =   2 * $S;
+            $DxH      =   $D * $H;
+            // $POQ      =   ceil(sqrt($TwoxS/$DxH));
+            $POQ      = sqrt($TwoxS/$DxH);
+
+            // Pastikan tidak ada pembagian nol // Calculate EOQ
+            if ($D > 0 && $S > 0 && $H > 0) {
+                $EOQ = sqrt((2 * $D * $S) / $H);
+            } else {
+                $EOQ = 0;
             }
 
-            // Ambil harga terakhir
-            $unitPrice = $product->selling_price;
-            if ($unitPrice <= 0) {
-                return response()->json(['message' => 'Product price is invalid'], 422);
-            }
-
-            // Hitung Holding Cost
-            $H = $unitPrice * ($product->holding_cost_percent ?? 0.1);
-            if ($H <= 0) {
-                return response()->json(['message' => 'Holding costs are invalid'], 422);
-            }
-
-            // Hitung EOQ dan POQ
-            $D = $product->average_demand * 12; // per tahun
-            $EOQ = sqrt((2 * $D * $S) / $H);
-            $POQ = $EOQ / ($D / 12); // periode per bulan
-
-            // Simpan POQ ke database
-            $product->poq_quantity = ceil($EOQ); // bisa diganti dengan POQ juga jika ingin
-            $product->save();
+            // Count Quantity
+            $POQbulanan = "";
+            $Q          = $D / $POQ;
 
             // Simpan ke tabel poqs (riwayat)
             PoQ::create([
                 'product_id' => $productId,
                 'average_demand' => $product->average_demand,
-                'demand_per_year' => $D,
+                'demand_per_year' => $D * 12,
                 'ordering_cost' => $S,
                 'unit_price' => $unitPrice,
-                'holding_cost' => $H,
+                'holding_cost' =>  (int)$H,
                 'eoq' => $EOQ,
                 'poq' => $POQ,
                 'calculated_by' => auth()->id(),
-                'notes' => 'Perhitungan otomatis sistem'
+                'notes' => 'Perhitungan otomatis sistem',
+                'S' => 2 * $S
             ]);
 
             DB::commit();
 
             return response()->json([
                 'product' => $product->name,
-                'EOQ' => round($EOQ),
-                'POQ' => round($POQ, 2),
+                'EOQ' => $EOQ,
+                'POQ' => $POQ,
                 'Unit Price' => $unitPrice,
-                'Ordering Cost (S)' => $S,
-                'Holding Cost (H)' => round($H, 2),
+                'Ordering Cost (1)' =>  $TwoxS,
+                'total_request (2)' => $DxH,
+                'Holding Cost (H)' => $H,
+                'Quantity'  => $Q,
                 'message' => $product->name. " calculate successfully",
                 'title'   => "Success"
             ]);
@@ -116,9 +116,21 @@ class POQController extends Controller
 
         $table = DataTables::of($data)
         ->addIndexColumn()
+        ->addColumn('holding_cost',function($row) {
+            return "Rp ".number_format($row->holding_cost,0,',','.');
+        })
+        ->addColumn('unit_price',function($row) {
+            return "Rp ".number_format($row->unit_price,0,',','.');
+        })
+        ->addColumn('ordering_cost',function($row) {
+            return "Rp ".number_format($row->ordering_cost,0,',','.');
+        })
         ->addColumn('product_id',function($row) {
             $product = Products::find($row->product_id);
             return $product->name;
+        })
+        ->addColumn('average_demand',function($row) {
+            return number_format($row->average_demand,0,',','.');
         })
         ->addColumn('created_at', function($row) {
             $format = Carbon::parse($row->created_at)->format('d F Y, H:i');
@@ -128,6 +140,7 @@ class POQController extends Controller
             $product = Products::find($row->product_id);
             return $product->unit;
         })
+        ->rawColumns(['holding_cost'])
         ->make(true);
 
         return $table;

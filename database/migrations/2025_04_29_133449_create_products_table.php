@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('average_demand')->default(100);
             $table->integer('poq_quantity')->nullable();
             $table->decimal('ordering_cost', 12, 2)->nullable(); // Contoh: 100000
-            $table->decimal('holding_cost_percent', 5, 4)->default(0.10); // 10% = 0.10
+            $table->decimal('holding_cost_percent', 12, 2)->default(0); // 10% = 0.10
             $table->decimal('selling_price',12,2)->default(0);
             $table->timestamps();
         });

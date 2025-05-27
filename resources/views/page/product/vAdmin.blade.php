@@ -119,7 +119,7 @@
                         <input type="number" class="form-control" name="ordering_cost"  placeholder="Ordering Cost">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Holding Cost Percent<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Holding Cost (Rp)<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" name="holding_cost_percent"  placeholder="Holding Cost Percent">
                     </div>
                 </div>
@@ -191,7 +191,7 @@
                         <input type="number" class="form-control" name="ordering_cost" id="ordering_cost"  placeholder="Ordering Cost">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Holding Cost Percent<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Holding Cost (Rp)<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" id="holding_cost_percent" name="holding_cost_percent"  placeholder="Holding Cost Percent">
                     </div>
                 </div>
