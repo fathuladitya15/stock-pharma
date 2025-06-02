@@ -36,7 +36,7 @@ class PoQReportExport implements FromCollection, WithMapping, WithHeadings
             'Rp ' . number_format($row->holding_cost, 0, ',', '.'),
             $row->eoq,
             $row->poq,
-            // $row->calculated_by,
+            $row->quantity,
             // $row->notes,
         ];
     }
@@ -53,6 +53,7 @@ class PoQReportExport implements FromCollection, WithMapping, WithHeadings
             'Holding Cost',
             'EOQ',
             'POQ',
+            'Quantity',
             // 'Calculated By',
             // 'Notes'
         ];

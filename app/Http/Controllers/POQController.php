@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\PoQ;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,7 +22,6 @@ class POQController extends Controller
         $product = Products::orderBy('name','ASC')->get();
         return view('page.poq.vIndex',compact('product'));
     }
-
 
     public function calculatePOQ($productId)
     {
@@ -48,8 +48,7 @@ class POQController extends Controller
             // Calculate POQ
             $TwoxS    =   2 * $S;
             $DxH      =   $D * $H;
-            // $POQ      =   ceil(sqrt($TwoxS/$DxH));
-            $POQ      = sqrt($TwoxS/$DxH);
+            $POQ      =   sqrt($TwoxS/$DxH);
 
             // Pastikan tidak ada pembagian nol // Calculate EOQ
             if ($D > 0 && $S > 0 && $H > 0) {
@@ -59,8 +58,8 @@ class POQController extends Controller
             }
 
             // Count Quantity
-            $POQbulanan = "";
-            $Q          = $D / $POQ;
+            $POQbulanan     = round($POQ, 0, PHP_ROUND_HALF_UP) * 12;
+            $Q              = $D / $POQbulanan;
 
             // Simpan ke tabel poqs (riwayat)
             PoQ::create([
@@ -72,6 +71,7 @@ class POQController extends Controller
                 'holding_cost' =>  (int)$H,
                 'eoq' => $EOQ,
                 'poq' => $POQ,
+                'quantity'  => $Q,
                 'calculated_by' => auth()->id(),
                 'notes' => 'Perhitungan otomatis sistem',
                 'S' => 2 * $S
@@ -80,20 +80,23 @@ class POQController extends Controller
             DB::commit();
 
             return response()->json([
-                'product' => $product->name,
-                'EOQ' => $EOQ,
-                'POQ' => $POQ,
-                'Unit Price' => $unitPrice,
+                'product'           => $product->name,
+                'EOQ'               => $EOQ,
+                'POQ'               => $POQ,
+                'Unit Price'        => $unitPrice,
                 'Ordering Cost (1)' =>  $TwoxS,
                 'total_request (2)' => $DxH,
-                'Holding Cost (H)' => $H,
-                'Quantity'  => $Q,
-                'message' => $product->name. " calculate successfully",
-                'title'   => "Success"
+                'Holding Cost (H)'  => $H,
+                'Quantity'          => $Q,
+                'pembulatan'        => $POQbulanan,
+                'pembulatan bawah'  => $POQbulanan2 ?? "",
+                'message'           => $product->name. " calculate successfully",
+                'title'             => "Success"
             ]);
 
         } catch (\Throwable $th) {
             DB::rollBack();
+            Log::error("message" . $th->getMessage());
             return response()->json([
                 'message' => 'Something went wrong',
                 'log' => $th->getMessage()
@@ -112,7 +115,7 @@ class POQController extends Controller
     }
 
     public function data(Request $request) {
-        $data = PoQ::all();
+        $data = PoQ::orderBy('created_at','desc')->get();
 
         $table = DataTables::of($data)
         ->addIndexColumn()
@@ -165,6 +168,7 @@ class POQController extends Controller
             $end        = $request->end_date;
             $filename   = "POQ-".now()->format('Ymd').'.xlsx';
             return Excel::download(new PoQReportExport($start,$end), $filename);
+
             // Tambahkan header agar Content-Disposition bisa dibaca di JavaScript
             $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition');
         } catch (\Exception $th) {

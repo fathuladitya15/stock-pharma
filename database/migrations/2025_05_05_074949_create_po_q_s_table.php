@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('holding_cost', 15, 2);
             $table->decimal('eoq', 15, 2);
             $table->decimal('poq', 15, 2);
+            $table->decimal('quantity',15,2);
             $table->foreignId('calculated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->text('notes')->nullable();
             $table->timestamps();

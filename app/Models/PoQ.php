@@ -20,6 +20,7 @@ class PoQ extends Model
         'holding_cost',
         'eoq',
         'poq',
+        'quantity',
         'calculated_by',
         'notes',
     ];

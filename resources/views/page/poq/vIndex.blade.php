@@ -68,6 +68,7 @@
                         <th>Price</th>
                         <th>EOQ</th>
                         <th>POQ</th>
+                        <th>Quantity</th>
                         <th>Calculation Date</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -160,6 +161,10 @@
                 {
                     data: 'poq',
                     name: 'poq',
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity',
                 },
                 {
                     data: 'created_at',
