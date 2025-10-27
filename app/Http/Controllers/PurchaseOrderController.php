@@ -43,8 +43,11 @@ class PurchaseOrderController extends Controller
         if ($role == 'supplier') {
             $supplier   =   Suppliers::where('user_id',$user->id)->first();
             $po         =   PurchaseOrder::where('supplier_id',$supplier->id)->get();
-        }else {
-            $po     =   PurchaseOrder::where('status','completed')->orderBy('created_at','desc')->get();
+        } else if ($role == 'admin') {
+            $po     =   PurchaseOrder::where('user_id',$user->id)->orderBy('created_at','desc')->get();
+        }
+        else {
+            $po     =   PurchaseOrder::orderBy('created_at','desc')->get();
         }
 
         $table  = DataTables::of($po)

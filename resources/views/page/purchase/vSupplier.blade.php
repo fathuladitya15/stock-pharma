@@ -135,7 +135,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Status</button>
+                    <button type="submit" class="btn btn-primary" id="button_submit">Update Status</button>
                 </div>
             </form>
         </div>
@@ -264,19 +264,40 @@
                     beforeSend: function() {
                         showLoadingAlert();
                     },success: function(response) {
-                        var data = response.data;
+                        var data        = response.data;
+                        var status      = data.status;
+                        var selected    = data.supplier_id;
+
                         swal.close();
-                        var selected = data.supplier_id;
 
                         $("#form_edit").attr('action', url_update);
                         $("#order_date").val(data.order_date);
 
-                        $("#status").val(data.status);
+                        // --- Handle status select ---
+                        const statusSelect = $("#status");
 
-                        // $("#status").attr('disabled',false);
+                        // Bersihkan opsi lama dan tambahkan default
+                        statusSelect.empty();
+                        statusSelect.append(`
+                            <option value="confirmed">Confirmed</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                        `);
+
+                        // Jika status completed, tambahkan opsi baru dan kunci select
+                        if (status === 'completed') {
+                            statusSelect.append('<option value="completed">Completed</option>');
+                            statusSelect.val('completed');
+                            statusSelect.attr('disabled', true);
+                            $("#button_submit").hide();
+                        } else {
+                            statusSelect.val(status);
+                            statusSelect.attr('disabled', false);
+                            $("#button_submit").show();
+                        }
 
 
-                        // Reset & set supplier
+                        // --- Supplier handling ---
                         $('#supplier_id').empty();
                         $('#supplier_id').append('<option value="">-- Select supplier --</option>');
                         $.each(response.supplier, function(key, value) {
