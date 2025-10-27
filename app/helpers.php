@@ -15,3 +15,20 @@ if (!function_exists('menuActive')) {
         }
     }
 }
+
+
+if (!function_exists('menuSubDrop')) {
+    function menuSubDrop($routeName)
+    {
+        $class = 'subdrop active';
+        if (is_array($routeName)) {
+            foreach ($routeName as $key => $value) {
+                if (request()->routeIs($value)) {
+                    return $class;
+                }
+            }
+        } elseif (request()->routeIs($routeName)) {
+            return $class;
+        }
+    }
+}

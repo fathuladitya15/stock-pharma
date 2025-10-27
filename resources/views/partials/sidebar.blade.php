@@ -31,13 +31,18 @@
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Master</h6>
                     <ul>
-                        <li class="{{ menuActive(['category.product']) }}">
-                            <a href="{{ route('category.product') }}" class="{{ menuActive(['category.product']) }}">
-                                <i class="ti ti-list-details fs-16 me-2"></i><span>Products Category</span>
-                            </a>
-                        </li>
-                        <li class="{{ menuActive(['product']) }}">
-                            <a href="{{ route('product') }}" class="{{ menuActive(['product']) }}"><i data-feather="box"></i><span>Products</span></a>
+                        <li class="submenu">
+                            <a href="javascript:void(0);" class="{{ menuSubDrop(['category.product','product']) }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ menuActive(['category.product']) }}">
+                                    <a href="{{ route('category.product') }}" class="{{ menuActive(['category.product']) }}">
+                                        <span>Products Category</span>
+                                    </a>
+                                </li>
+                                <li class="{{ menuActive(['product']) }}">
+                                    <a href="{{ route('product') }}" class="{{ menuActive(['product']) }}"><span>Product</span></a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="{{ menuActive(['suppliers']) }}">
                             <a href="{{ route('suppliers') }}" class="{{ menuActive(['suppliers']) }}"><i class="ti ti-archive fs-16 me-2"></i><span>Suplliers</span></a>
@@ -86,7 +91,7 @@
                 </li>
 
                 @endif
-                @if(in_array(auth()->user()->role, ['admin', 'manager']))
+                @if(in_array(auth()->user()->role, ['admin']))
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Monitoring </h6>
                     <ul>
