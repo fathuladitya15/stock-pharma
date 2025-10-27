@@ -1,66 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Manajemen Stok dengan POQ - Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem ini merupakan aplikasi manajemen stok barang yang menerapkan metode **POQ (Periodic Order Quantity)** untuk membantu menentukan kapan dan berapa banyak barang yang perlu dipesan secara periodik berdasarkan data permintaan dan biaya.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🗂️ Struktur Tabel Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. `products`
+Menyimpan informasi produk.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Kolom                | Deskripsi                                      |
+|----------------------|-----------------------------------------------|
+| product_code         | Kode unik produk                              |
+| name                 | Nama produk                                   |
+| category_id          | Kategori produk (relasi ke tabel `categories`)|
+| unit                 | Satuan                                        |
+| stock                | Stok saat ini                                 |
+| min_stock            | Batas minimum stok                            |
+| lead_time            | Waktu tunggu pengiriman (hari)                |
+| average_demand       | Permintaan rata-rata bulanan                  |
+| poq_quantity         | Hasil perhitungan POQ                         |
+| ordering_cost        | Biaya pemesanan                               |
+| holding_cost_percent | Persentase biaya penyimpanan per tahun        |
+| selling_price        | Harga jual                                    |
 
-## Learning Laravel
+### 2. `categories`
+Menyimpan kategori produk.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Kolom | Deskripsi     |
+|-------|----------------|
+| name  | Nama kategori  |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 3. `stock_movements`
+Mencatat pergerakan stok masuk/keluar.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Kolom     | Deskripsi                       |
+|-----------|----------------------------------|
+| type      | Jenis (in/out)                  |
+| quantity  | Jumlah pergerakan               |
+| note      | Catatan (opsional)              |
+| user_id   | Pengguna yang melakukan aksi    |
 
-## Laravel Sponsors
+### 4. `purchase_orders`
+Menyimpan data pemesanan ke supplier.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Kolom     | Deskripsi                               |
+|-----------|------------------------------------------|
+| po_number | Nomor PO unik                            |
+| supplier_id | ID Supplier                            |
+| order_date | Tanggal pemesanan                       |
+| status    | Status PO (`draft`, `sent`, `received`, `cancelled`) |
+| note      | Catatan tambahan                         |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 📈 Perhitungan POQ
 
-## Contributing
+### Rumus:
+\[
+POQ = \sqrt{\frac{2 \times S \times P}{H}}
+\]
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **S** = ordering_cost
+- **P** = periode per tahun (default: 12 bulan)
+- **H** = holding_cost_percent × selling_price
 
-## Code of Conduct
+Hasil perhitungan disimpan di kolom `poq_quantity`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## ⚙️ Scheduler / Artisan Command (Opsional)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Perhitungan POQ bisa dijalankan melalui:
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan calculate:poq
