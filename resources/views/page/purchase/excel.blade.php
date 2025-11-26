@@ -13,17 +13,17 @@
     </style>
 </head>
 <body>
-    <h3>Data Purchase Order</h3>
+    <h3>Daftar Pesanan Pembelian</h3>
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th>Date</th>
-                <th>Code</th>
-                <th>Category</th>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Price</th>
+                <th>Tanggal</th>
+                <th>Kode Produk</th>
+                <th>Kategori Produk</th>
+                <th>Nama Produk</th>
+                <th>Kuantitas</th>
+                <th>Harga</th>
                 <th>Total</th>
             </tr>
         </thead>

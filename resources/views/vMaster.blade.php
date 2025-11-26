@@ -264,8 +264,8 @@
 
         function showLoadingAlert() {
             Swal.fire({
-                title: "Please wait ... !",
-                html: "Is processing ... ",
+                title: "Mohon tunggu ... !",
+                html: "Sedang memproses ... ",
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 width: '300px', // default-nya 500px

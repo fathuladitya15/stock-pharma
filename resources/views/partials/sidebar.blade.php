@@ -22,7 +22,7 @@
                     <ul>
                         <li class="{{ menuActive(['home','profile']) }}">
                             <a href="{{ route('home') }}" class="{{ menuActive(['home','profile']) }}">
-                                <i class="ti ti-layout-grid fs-16 me-2"></i><span>Dashboard</span>
+                                <i class="ti ti-layout-grid fs-16 me-2"></i><span>Beranda</span>
                             </a>
                         </li>
                     </ul>
@@ -32,15 +32,15 @@
                     <h6 class="submenu-hdr">Master</h6>
                     <ul>
                         <li class="submenu">
-                            <a href="javascript:void(0);" class="{{ menuSubDrop(['category.product','product']) }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);" class="{{ menuSubDrop(['category.product','product']) }}"><i data-feather="box"></i><span>Produk</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ menuActive(['category.product']) }}">
                                     <a href="{{ route('category.product') }}" class="{{ menuActive(['category.product']) }}">
-                                        <span>Products Category</span>
+                                        <span>Kategori Produk</span>
                                     </a>
                                 </li>
                                 <li class="{{ menuActive(['product']) }}">
-                                    <a href="{{ route('product') }}" class="{{ menuActive(['product']) }}"><span>Product</span></a>
+                                    <a href="{{ route('product') }}" class="{{ menuActive(['product']) }}"><span>Data Produk</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -50,22 +50,22 @@
                         @if(in_array(auth()->user()->role, ['admin']))
 
                          <li class="{{ menuActive(['users']) }}">
-                            <a href="{{ route('users') }}" class="{{ menuActive(['users']) }}"><i class="ti ti-user-edit fs-16 me-2"></i><span>Users</span></a>
+                            <a href="{{ route('users') }}" class="{{ menuActive(['users']) }}"><i class="ti ti-user-edit fs-16 me-2"></i><span>Pengguna</span></a>
                         </li>
                         @endif
                     </ul>
                 </li>
                 <li class="submenu-open">
-                    <h6 class="submenu-hdr">Sales & Purchase</h6>
+                    <h6 class="submenu-hdr">Penjualan dan Pembelian</h6>
                     <ul>
                         @if(in_array(auth()->user()->role, ['admin']))
                         <li class="{{ menuActive(['sales']) }}">
-                            <a href="{{ route('sales') }}"><i class="ti ti-shopping-bag fs-16 me-2"></i><span>Sales</span></a>
+                            <a href="{{ route('sales') }}"><i class="ti ti-shopping-bag fs-16 me-2"></i><span>Penjualan</span></a>
                         </li>
                         @endif
                          <li class="{{ menuActive(['purchase.order']) }}">
                             <a href="{{ route('purchase.order') }}" class="{{ menuActive(['purchase.order']) }}">
-                                <i class="ti ti-shopping-bag fs-16 me-2"></i><span>Purchase Order</span>
+                                <i class="ti ti-shopping-bag fs-16 me-2"></i><span>Pembelian</span>
                             </a>
                         </li>
                     </ul>
@@ -78,13 +78,13 @@
                         <li class="{{ menuActive(['sales.report']) }}">
                             <a href="{{ route('sales.report') }}" class="{{ menuActive(['sales.report']) }}">
                                 <i class="ti ti-chart-bar fs-16 me-2"></i>
-                                <span>Sales report</span>
+                                <span>Laporan Penjualan</span>
                             </a>
                         </li>
                         <li class="{{ menuActive('purchase.order.report') }}">
                             <a href="{{ route('purchase.order.report') }}" class="{{ menuActive('purchase.order.report') }}">
                                 <i class="ti ti-chart-pie-2 fs-16 me-2"></i>
-                                <span>Purchase report</span>
+                                <span>Laporan Pembelian</span>
                             </a>
                         </li>
                     </ul>
@@ -93,7 +93,7 @@
                 @endif
                 @if(in_array(auth()->user()->role, ['admin']))
                 <li class="submenu-open">
-                    <h6 class="submenu-hdr">Monitoring </h6>
+                    <h6 class="submenu-hdr">Pemantauan </h6>
                     <ul>
                         <li class="{{ menuActive(['poq.index']) }}">
                             <a href="{{ route('poq.index') }}" class="{{ menuActive(['poq.index']) }}">
@@ -107,11 +107,11 @@
                 <!-- Contoh Menu Khusus Role Suppliers -->
                 @if(in_array(auth()->user()->role,['supplier']))
                 <li class="submenu-open">
-                    <h6 class="submenu-hdr">Supplier Area</h6>
+                    <h6 class="submenu-hdr">Are Supplier</h6>
                     <ul>
                         <li class="{{ menuActive(['purchase.order']) }}">
                             <a href="{{ route('purchase.order') }}" class="{{ menuActive(['purchase.order']) }}">
-                                <i class="ti ti-package fs-16 me-2"></i><span>My Orders</span>
+                                <i class="ti ti-package fs-16 me-2"></i><span>Pesanan Saya</span>
                             </a>
                         </li>
                     </ul>

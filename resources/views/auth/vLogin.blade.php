@@ -57,13 +57,13 @@
                                     <div class="card">
                                         <div class="card-body p-5">
                                             <div class="login-userheading">
-                                                <h3>Log In</h3>
-                                                <h4>Access the StockPharma panel using your email and passcode.</h4>
+                                                <h3>Masuk</h3>
+                                                <h4>Akses panel StockPharma menggunakan email dan kode sandi Anda.</h4>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Email <span class="text-danger"> *</span></label>
                                                 <div class="input-group">
-                                                    <input type="text" value="" name="email" class="form-control border-end-0" required>
+                                                    <input type="text" value="" name="email" class="form-control border-end-0" required placeholder="masukan email">
                                                     <span class="input-group-text border-start-0">
                                                         <i class="ti ti-mail"></i>
                                                     </span>
@@ -72,7 +72,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Password <span class="text-danger"> *</span></label>
                                                 <div class="pass-group">
-                                                    <input type="password" name="password" class="pass-input form-control" required>
+                                                    <input type="password" name="password" class="pass-input form-control" required placeholder="masukan password">
                                                     <span class="ti toggle-password ti-eye-off text-gray-9"></span>
                                                 </div>
                                             </div>
@@ -126,8 +126,8 @@
                     type    : "POST",
                     beforeSend: function() {
                         Swal.fire({
-                            title: "Please Wait ... !",
-                            html: "trying to login<b></b> ",
+                            title: "Mohon tunggu ... !",
+                            html: "memproses masuk anda<b></b> ",
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             didOpen: () => {
@@ -138,8 +138,8 @@
                     success : function(response) {
                         let timerInterval;
                         Swal.fire({
-                            title: "Logged in",
-                            html: "You will be redirected to the home menu ",
+                            title: "Berhasil masuk",
+                            html: "Anda akan diarahkan ke menu beranda ",
                             icon: "success",
                             timer: 2000,
                             timerProgressBar: true,

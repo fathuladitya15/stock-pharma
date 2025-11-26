@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Category Product List</h4>
-            <h6>Manage your category products</h6>
+            <h4 class="fw-bold">Daftar Produk Kategori</h4>
+            <h6>Kelola produk kategori Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -14,7 +14,7 @@
         </li>
     </ul>
     <div class="page-btn">
-        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Category</a>
+        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Tambah Kategori</a>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No </th>
-                        <th>Category Name</th>
+                        <th>Nama Kategori</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -52,7 +52,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Add Category</h4>
+                    <h4>Tambah Kategori</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -62,13 +62,13 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Category<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="name" required placeholder="Category Name">
+                        <label class="form-label">Nama Kategori<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="name" required placeholder="Nama Kategori">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Category</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
@@ -81,7 +81,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Edit Category</h4>
+                    <h4>Edit Kategori</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -92,13 +92,13 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" value="">
                     <div class="mb-3">
-                        <label class="form-label">Category<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="name_edit" name="name" required placeholder="Category Name">
+                        <label class="form-label">Nama Kategori<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="name_edit" name="name" required placeholder="Nama Kategori">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Category</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Perbarui</button>
                 </div>
             </form>
         </div>
@@ -112,11 +112,11 @@
             <div class="page-wrapper-new p-0">
                 <div class="content p-5 px-3 text-center">
                         <span class="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2"><i class="ti ti-trash fs-24 text-danger"></i></span>
-                        <h4 class="fs-20 text-gray-9 fw-bold mb-2 mt-1">Delete Product</h4>
-                        <p class="text-gray-6 mb-0 fs-16">Are you sure you want to delete product?</p>
+                        <h4 class="fs-20 text-gray-9 fw-bold mb-2 mt-1">Hapus Kategori Produk</h4>
+                        <p class="text-gray-6 mb-0 fs-16">Apakah anda yakin akan mengahapus kategori produk ini?</p>
                         <div class="modal-footer-btn mt-3 d-flex justify-content-center">
-                            <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary fs-13 fw-medium p-2 px-3">Yes Delete</button>
+                            <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary fs-13 fw-medium p-2 px-3">Ya, Hapus</button>
                         </div>
                 </div>
             </div>
@@ -264,8 +264,8 @@
             var id = $(this).data('id');
             var url = url_delete.replace(":id",id);
             Swal.fire({
-                title: "Delete Category?",
-                text: "You won't be able to revert this!",
+                title: "Hapus kategori produk?",
+                text: "Anda tidak akan dapat mengembalikannya!",
                 icon: "warning",
                 width: '300px', // default-nya 500px
                 customClass: {
@@ -275,7 +275,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Ya, hapus!",
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {

@@ -7,8 +7,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Purhase Order List</h4>
-            <h6>Manage your Purchase Order</h6>
+            <h4 class="fw-bold">Daftar Pesanan Pembelian</h4>
+            <h6>Kelola Pesanan Pembelian Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -42,9 +42,9 @@
                                 <span class="checkmarks"></span>
                             </label>
                         </th>
-                        <th>PO Number </th>
+                        <th>Nomor PO </th>
                         <th>Supplier</th>
-                        <th>Date</th>
+                        <th>Tanggal</th>
                         <th>Status</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -65,9 +65,9 @@
             <div class="modal-header">
                 <div class="page-title">
                     @if (auth()->user()->role == 'supplier')
-                    <h4>Detail Purchase Order</h4>
+                    <h4>Detail Pesanan Pembelian</h4>
                     @else
-                    <h4>Edit Purchase Order</h4>
+                    <h4>Edit Pesanan Pembelian</h4>
                     @endif
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Order Date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Tanggal Pemesanan<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" id="order_date" name="order_date" required {{ $role == 'supplier' ? 'disabled' : '' }}>
                     </div>
 
@@ -96,9 +96,9 @@
                         <table class="table table-bordered" id="edit-product-table">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Produk</th>
                                     <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>Harga</th>
                                     <th>
                                         @if (auth()->user()->role != 'supplier')
                                         <button type="button" class="btn btn-sm btn-success" id="edit-add-product">+</button>
@@ -117,7 +117,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="mb-3">
-                                <label class="form-label">Note</label>
+                                <label class="form-label">Catatan</label>
                                 <input type="text" class="form-control" name="note" id="note" disabled>
                             </div>
                         </div>
@@ -125,17 +125,17 @@
                             <div class="mb-3">
                                 <label class="form-label">Status<span class="text-danger ms-1">*</span></label>
                                 <select name="status" id="status" class="form-control" required>
-                                    <option value="confirmed">Confirmed</option>
-                                    <option value="processing">Processing</option>
-                                    <option value="shipped">Shipped</option>
+                                    <option value="confirmed">Dikonfirmasi</option>
+                                    <option value="processing">Diproses</option>
+                                    <option value="shipped">Dikirim</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="button_submit">Update Status</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="button_submit">Perbarui status</button>
                 </div>
             </form>
         </div>
@@ -279,14 +279,14 @@
                         // Bersihkan opsi lama dan tambahkan default
                         statusSelect.empty();
                         statusSelect.append(`
-                            <option value="confirmed">Confirmed</option>
-                            <option value="processing">Processing</option>
-                            <option value="shipped">Shipped</option>
+                            <option value="confirmed">Dikonfirmasi</option>
+                            <option value="processing">Diproses</option>
+                            <option value="shipped">Terkirim</option>
                         `);
 
                         // Jika status completed, tambahkan opsi baru dan kunci select
                         if (status === 'completed') {
-                            statusSelect.append('<option value="completed">Completed</option>');
+                            statusSelect.append('<option value="completed">Selesai</option>');
                             statusSelect.val('completed');
                             statusSelect.attr('disabled', true);
                             $("#button_submit").hide();
@@ -299,7 +299,7 @@
 
                         // --- Supplier handling ---
                         $('#supplier_id').empty();
-                        $('#supplier_id').append('<option value="">-- Select supplier --</option>');
+                        $('#supplier_id').append('<option value="">-- Pilih Supplier --</option>');
                         $.each(response.supplier, function(key, value) {
                             let isSelected = (value.id === selected) ? 'selected' : '';
                             $('#supplier_id').append(
@@ -314,7 +314,7 @@
                         editRowIndex = 0;
 
                         $.each(response.items, function (i, item) {
-                            let options = '<option value="">-- Select Product --</option>';
+                            let options = '<option value="">-- Pilih Produk --</option>';
                             $.each(response.products, function (j, p) {
                                 let selected = item.product_id == p.id ? 'selected' : '';
                                 options += `<option value="${p.id}" ${selected}>${p.name}</option>`;
@@ -373,8 +373,8 @@
                 var id = $(this).data('id');
                 var url = url_delete.replace(":id",id);
                 Swal.fire({
-                    title: "Delete Purchase Order?",
-                    text: "You won't be able to revert this!",
+                    title: "Hapus Pesanan Pembelian?",
+                    text: "Anda tidak dapat mengembalikannya!",
                     icon: "warning",
                     width: '300px', // default-nya 500px
                     customClass: {
@@ -384,7 +384,7 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonText: "Ya, Hapus!",
                     reverseButtons: true
                   }).then((result) => {
                     if (result.isConfirmed) {
@@ -431,7 +431,7 @@
 
             $(document).on('click', '#edit-add-product', function () {
                 let products = window.availableProducts || [];
-                let options = '<option value="">-- Select Product --</option>';
+                let options = '<option value="">-- Pilih Produk --</option>';
                 $.each(products, function (j, p) {
                     options += `<option value="${p.id}">${p.name}</option>`;
                 });

@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Suppliers List</h4>
-            <h6>Manage your suppliers</h6>
+            <h4 class="fw-bold">Daftar Supplier</h4>
+            <h6>Kelola Supplier Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -14,7 +14,7 @@
         </li>
     </ul>
     <div class="page-btn">
-        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Suppliers</a>
+        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Tambah Supplier</a>
     </div>
 </div>
 
@@ -33,8 +33,8 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No </th>
-                        <th>Name</th>
-                        <th>Contact</th>
+                        <th>Nama</th>
+                        <th>Kontak</th>
                         <th>Email</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -54,7 +54,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Add Suppliers</h4>
+                    <h4>Tambah Supplier</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -64,24 +64,24 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="name" required placeholder="Name Suppliers">
+                        <label class="form-label">Nama<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="name" required placeholder="Nama Suppliers">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Contact<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="contact" required placeholder="Contact Suppliers">
+                        <label class="form-label">Kontak<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="contact" required placeholder="Kontak Suppliers">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email<span class="text-danger ms-1">*</span></label>
-                        <input type="email" class="form-control" name="email" required placeholder="mail@example.com">
+                        <input type="email" class="form-control" name="email" required placeholder="mail@contohb.com">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Address<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Alamat<span class="text-danger ms-1">*</span></label>
                         <textarea name="address" cols="30" rows="10" class="form-control" required></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Suppliers</button>
+                        <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Tambah Supplier</button>
                     </div>
                 </div>
             </form>
@@ -105,25 +105,25 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" required placeholder="Name Suppliers">
+                        <label class="form-label">Nama<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Nama Supplier">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Contact<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="contact" name="contact" required placeholder="Contact Suppliers">
+                        <label class="form-label">Kontak<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="contact" name="contact" required placeholder="Kontak Supplier">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email<span class="text-danger ms-1">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email" required placeholder="mail@example.com">
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="mail@contoh.com">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Address<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Alamat<span class="text-danger ms-1">*</span></label>
                         <textarea name="address" id="address" cols="30" rows="10" class="form-control" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Suppliers</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Perbarui Supplier</button>
                 </div>
             </form>
         </div>
@@ -281,8 +281,8 @@
             var id = $(this).data('id');
             var url = url_delete.replace(":id",id);
             Swal.fire({
-                title: "Delete Supplier?",
-                text: "You won't be able to revert this!",
+                title: "Hapus Supplier?",
+                text: "Anda tidak akan dapat mengembalikannya!",
                 icon: "warning",
                 width: '300px', // default-nya 500px
                 customClass: {
@@ -292,7 +292,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Ya, Hapus!",
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {

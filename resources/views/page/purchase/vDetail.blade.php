@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Purchase Order</title>
+  <title>Pesanan Pembelian</title>
   <style>
     body {
       font-family: 'DejaVu Sans', sans-serif;
@@ -92,14 +92,14 @@
 <body>
 
   <div class="header">
-    <h1>PURCHASE ORDER</h1>
+    <h1>Pesanan Pembelian</h1>
   </div>
 
   <div class="po-info">
     <table>
       <tr>
-        <td><strong>PO Number:</strong> {{ $data->po_number }}</td>
-        <td><strong>Date:</strong> {{ $data->order_date }}</td>
+        <td><strong>Nomor PO:</strong> {{ $data->po_number }}</td>
+        <td><strong>Tanggal:</strong> {{ $data->order_date }}</td>
       </tr>
     </table>
   </div>
@@ -119,9 +119,9 @@
     <thead>
       <tr>
         <th>No</th>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Price</th>
+        <th>Nama Produk</th>
+        <th>Kuantitas</th>
+        <th>Harga</th>
         <th>Subtotal</th>
       </tr>
     </thead>

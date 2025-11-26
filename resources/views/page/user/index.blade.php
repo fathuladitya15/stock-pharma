@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Users List</h4>
-            <h6>Manage your Users</h6>
+            <h4 class="fw-bold">Daftar Pengguna</h4>
+            <h6>Kelola Pengguna Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -14,7 +14,7 @@
         </li>
     </ul>
     <div class="page-btn">
-        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Users</a>
+        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Tambah Pengguna</a>
     </div>
 </div>
 
@@ -33,8 +33,8 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No </th>
-                        <th>Name</th>
-                        <th>Role</th>
+                        <th>Nama</th>
+                        <th>Peran</th>
                         <th>Email</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -54,7 +54,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Add Users</h4>
+                    <h4>Tambah Pengguna</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -64,13 +64,13 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="name" required placeholder="Name users">
+                        <label class="form-label">Nama<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="name" required placeholder="Nama Pengguna">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Role<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Peran<span class="text-danger ms-1">*</span></label>
                         <select name="role" class="form-control" required>
-                            <option value="">-- Select Role --</option>
+                            <option value="">-- Pilih Peran --</option>
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
                             <option value="staff_gudang">Staff Gudang</option>
@@ -79,15 +79,15 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email<span class="text-danger ms-1">*</span></label>
-                        <input type="email" class="form-control" name="email" required placeholder="mail@example.com">
+                        <input type="email" class="form-control" name="email" required placeholder="mail@contoh.com">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Kata Sandi<span class="text-danger ms-1">*</span></label>
                         <input type="password" class="form-control" name="password" required placeholder="*********">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add users</button>
+                        <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Tambah Pengguna</button>
                     </div>
                 </div>
             </form>
@@ -101,7 +101,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Edit User</h4>
+                    <h4>Edit Pengguna</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -111,13 +111,13 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" required placeholder="Name users">
+                        <label class="form-label">Nama<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Nama Pengguna">
                     </div>
                    <div class="mb-3">
-                        <label class="form-label">Role<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Peran<span class="text-danger ms-1">*</span></label>
                         <select name="role" id="role" class="form-control" required>
-                            <option value="">-- Select Role --</option>
+                            <option value="">-- Pilih Peran --</option>
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
                             <option value="staff_gudang">Staff Gudang</option>
@@ -129,13 +129,13 @@
                         <input type="email" class="form-control" id="email" name="email" required placeholder="mail@example.com">
                     </div>
                      <div class="mb-3">
-                        <label class="form-label">Password</label>
+                        <label class="form-label">Kata Sandi</label>
                         <input type="password" class="form-control" name="password"  placeholder="*********">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update users</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Perbarui Pengguna</button>
                 </div>
             </form>
         </div>
@@ -290,8 +290,8 @@
             var id = $(this).data('id');
             var url = url_delete.replace(":id",id);
             Swal.fire({
-                title: "Delete User?",
-                text: "You won't be able to revert this!",
+                title: "Hapus Pengguna?",
+                text: "Anda tidak akan dapat mengembalikannya!",
                 icon: "warning",
                 width: '300px', // default-nya 500px
                 customClass: {
@@ -301,7 +301,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Ya, Hapus!",
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {

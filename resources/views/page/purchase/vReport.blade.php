@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4>Purchase Order report</h4>
-            <h6>Manage your Purchase Order report</h6>
+            <h4>Laporan Pesanan Pembelian</h4>
+            <h6>Kelola laporan Pesanan Pembelian Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -25,13 +25,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Start Date</label>
+                                <label class="form-label">Mulai tanggal</label>
                                 <input type="date" class="form-control date-range" name="start_date" id="start_date" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">End Date</label>
+                                <label class="form-label">Sampai tanggal</label>
                                 <input type="date" class="form-control date-range" name="end_date" id="end_date" required>
 
                             </div>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-3">
-                        <button class="btn btn-primary w-100" type="submit">Generate Report</button>
+                        <button class="btn btn-primary w-100" type="submit">Hasilkan Laporan</button>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
 <div class="card no-search">
     <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
         <div>
-            <h4>Purchase Order Report</h4>
+            <h4>Laporan Pesanan Pembelian</h4>
         </div>
         <ul class="table-top-head">
            <li class="me-2">
@@ -68,23 +68,23 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
-                        <th>Code</th>
-                        <th>Category</th>
-                        <th>Product</th>
+                        <th>Tanggal</th>
+                        <th>Kode</th>
+                        <th>Kategori</th>
+                        <th>Produk</th>
                         <th>Qty</th>
-                        <th>Price</th>
+                        <th>Harga</th>
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                         <td colspan="8" class="text-center">Please do a search first</td>
+                         <td colspan="8" class="text-center">Silakan melakukan pencarian terlebih dahulu</td>
                      </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7" style="text-align:right;"><strong>Grand Total:</strong></td>
+                        <td colspan="7" style="text-align:right;"><strong>Total Keseluruhan:</strong></td>
                         <td id="grand-total"><strong>Rp 0</strong></td>
                     </tr>
                 </tfoot>
@@ -167,7 +167,7 @@
             let end = $('#end_date').val();
 
             if (!start || !end) {
-                showAlert('Please fill in the start and end date.','Opps','info');
+                showAlert('Silakan isi tanggal mulai dan berakhir.','Opps','info');
                 return;
             }
 

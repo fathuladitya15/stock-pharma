@@ -7,8 +7,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Purhase Order List</h4>
-            <h6>Manage your Purchase Order</h6>
+            <h4 class="fw-bold">Daftar Pesanan Pembelian</h4>
+            <h6>Kelola Pesanan Pembelian Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -21,7 +21,7 @@
     </ul>
     @if (auth()->user()->role != 'supplier')
         <div class="page-btn">
-            <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Create Purchase Order</a>
+            <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Buat Pesanan Pembelian</a>
         </div>
 
     @endif
@@ -48,9 +48,9 @@
                                 <span class="checkmarks"></span>
                             </label>
                         </th>
-                        <th>PO Number </th>
+                        <th>Nomor PO </th>
                         <th>Supplier</th>
-                        <th>Date</th>
+                        <th>Tanggal</th>
                         <th>Status</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -71,7 +71,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Create Purchase Order</h4>
+                    <h4>Buat Pesanan Pembelian</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -81,26 +81,26 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Suppliers<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Supplier<span class="text-danger ms-1">*</span></label>
                         <select name="supplier_id" class="form-control" required>
-                            <option value="">-- Select Suppliers --</option>
+                            <option value="">-- Pilih Supplier --</option>
                             @foreach ($suppliers as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Order Date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Tanggal Pembelian<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" name="order_date" required >
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Products</label>
+                        <label class="form-label">Produk</label>
                         <table class="table table-bordered" id="product-table">
                             <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>Harga</th>
                                     <th><button type="button" class="btn btn-sm btn-success" id="add-product">+</button></th>
                                 </tr>
                             </thead>
@@ -121,13 +121,13 @@
                         </table>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Note<span class="text-danger ms-1"></span></label>
+                        <label class="form-label">Catatan<span class="text-danger ms-1"></span></label>
                         <input type="text" class="form-control" name="note" >
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create purchase order</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Buat Pesanan Pembelian</button>
                 </div>
             </form>
         </div>
@@ -141,9 +141,9 @@
             <div class="modal-header">
                 <div class="page-title">
                     @if (auth()->user()->role == 'supplier')
-                    <h4>Detail Purchase Order</h4>
+                    <h4>Detail Pesanan Pembelian</h4>
                     @else
-                    <h4>Edit Purchase Order</h4>
+                    <h4>Edit Pesanan Pembelian</h4>
                     @endif
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
@@ -154,7 +154,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Suppliers<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Supplier<span class="text-danger ms-1">*</span></label>
                         <select name="supplier_id" id="supplier_id" class="form-control" required {{ $role == 'supplier' ? 'disabled' : '' }}>
                             @foreach ($suppliers as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -163,18 +163,18 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Order Date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Tanggal Pembelian<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" id="order_date" name="order_date" required {{ $role == 'supplier' ? 'disabled' : '' }}>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Products</label>
+                        <label class="form-label">Produk</label>
                         <table class="table table-bordered" id="edit-product-table">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Nama Produk</th>
                                     <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>Harga</th>
                                     <th>
                                         @if (auth()->user()->role != 'supplier')
                                         <button type="button" class="btn btn-sm btn-success" id="edit-add-product">+</button>
@@ -191,7 +191,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="mb-3">
-                                <label class="form-label">Note</label>
+                                <label class="form-label">Catatan</label>
                                 <input type="text" class="form-control" name="note" id="note">
                             </div>
                         </div>
@@ -200,17 +200,17 @@
                                 <label class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option value="draft">Draft</option>
-                                    <option value="sent">Sent</option>
-                                    <option value="canceled">Canceled</option>
+                                    <option value="sent">Terkirim</option>
+                                    <option value="canceled">Dibatalkan</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
                     @if (auth()->user()->role != 'supplier')
-                    <button type="submit" id="submit_update" class="btn btn-primary">Update Purchase Order</button>
+                    <button type="submit" id="submit_update" class="btn btn-primary">Perbarui Pesanan Pembelian</button>
                     @endif
                 </div>
             </form>
@@ -224,7 +224,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Export Report Purchase Order</h4>
+                    <h4>Laporan Ekspor Pesanan Pembelian</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -234,17 +234,17 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Start date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Mulai tanggal<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" name="start_date" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">End date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Sampai tanggal<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" name="end_date" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Export</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Ekspor</button>
                 </div>
             </form>
         </div>
@@ -451,8 +451,8 @@
                 var id = $(this).data('id');
                 var url = url_delete.replace(":id",id);
                 Swal.fire({
-                    title: "Delete Purchase Order?",
-                    text: "You won't be able to revert this!",
+                    title: "Hapus Pesanan Pembelian?",
+                    text: "Anda tidak dapat mengembalikannya!",
                     icon: "warning",
                     width: '300px', // default-nya 500px
                     customClass: {
@@ -509,7 +509,7 @@
 
             $(document).on('click', '#edit-add-product', function () {
                 let products = window.availableProducts || [];
-                let options = '<option value="">-- Select Product --</option>';
+                let options = '<option value="">-- Pilih Produk --</option>';
                 $.each(products, function (j, p) {
                     options += `<option value="${p.id}">${p.name}</option>`;
                 });
@@ -591,13 +591,13 @@
                 var id = $(this).data('id');
                 var url = url_status.replace(':id',id);
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "Have you received the item?",
+                    title: "Apa kamu yakin?",
+                    text: "Apakah Anda sudah menerima barangnya?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, complete it!",
+                    confirmButtonText: "Ya!",
                     width: '300px', // default-nya 500px
                     customClass: {
                       popup: 'custom-swal-size'

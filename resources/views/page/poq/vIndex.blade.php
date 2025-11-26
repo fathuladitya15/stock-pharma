@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Calculate POQ</h4>
-            <h6>Calculate POQ (Periodic Order Quantity)</h6>
+            <h4 class="fw-bold">Hitung POQ</h4>
+            <h6>Hitung POQ <i>(Periodic Order Quantity)</i></h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -21,9 +21,9 @@
         <div class="card-body">
             <div class="col-lg-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="form-label">Product<span class="text-danger ms-1">*</span></label>
+                    <label class="form-label">Produk<span class="text-danger ms-1">*</span></label>
                     <select name="product_id" id="product_id" class="form-control">
-                        <option value="">-- Select Product --</option>
+                        <option value="">-- Pilih Produk --</option>
                         @foreach ($product as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
@@ -32,7 +32,7 @@
             </div>
             <div class="col-12 d-flex justify-content-end">
                 {{-- <a href="javascript:void(0);" class="btn btn-secondary me-2 shadow-none">Cancel</a> --}}
-                <button type="submit" class="btn btn-primary shadow-none">Calculate</button>
+                <button type="submit" class="btn btn-primary shadow-none">Hitung</button>
             </div>
         </div>
     </form>
@@ -61,15 +61,15 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No</th>
-                        <th>Product Name</th>
-                        <th>Unit</th>
-                        <th>Average Demand</th>
-                        <th>Demand Year</th>
-                        <th>Price</th>
+                        <th>Nama Produk</th>
+                        <th>Satuan</th>
+                        <th>Permintaan Rata-rata</th>
+                        <th>Tahun Permintaan</th>
+                        <th>Harga</th>
                         <th>EOQ</th>
                         <th>POQ</th>
-                        <th>Quantity</th>
-                        <th>Calculation Date</th>
+                        <th>Kuantitas</th>
+                        <th>Tanggal Perhitungan</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -87,7 +87,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Export POQ to Excel</h4>
+                    <h4>Eskpor POQ ke Excel</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -97,17 +97,17 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Start date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Mulai tanggal<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" name="start_date" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">End date<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Sampai tanggal<span class="text-danger ms-1">*</span></label>
                         <input type="date" class="form-control" name="end_date" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Export</button>
+                    <button type="submit" class="btn btn-primary">Ekspor</button>
                 </div>
             </form>
         </div>
@@ -209,7 +209,7 @@
             e.preventDefault();
             var id = $("#product_id").val();
             if (id === "") {
-                showAlert('Product has not been selected yet','Opps ...','info');
+                showAlert('Produk belum dipilih','Opps ...','info');
                 return;
             }
 
@@ -241,8 +241,8 @@
             var id = $(this).data('id');
             var url = url_delete.replace(":id",id);
             Swal.fire({
-                title: "Delete POQ?",
-                text: "You won't be able to revert this!",
+                title: "Hapus POQ?",
+                text: "Anda tidak dapat mengembalikannya!",
                 icon: "warning",
                 width: '300px', // default-nya 500px
                 customClass: {
@@ -252,7 +252,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Ya, Hapus!",
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {

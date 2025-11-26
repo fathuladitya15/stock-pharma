@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-2">
     <div class="mb-3">
-        <h1 class="mb-1">Welcome, {{ Str::title($name) }}</h1>
+        <h1 class="mb-1">Selamat Datang, {{ Str::title($name) }}</h1>
     </div>
 
 </div>
@@ -17,7 +17,7 @@
                     <i class="ti ti-file-text fs-24"></i>
                 </span>
                 <div class="ms-2">
-                    <p class="text-white mb-1">Total Product</p>
+                    <p class="text-white mb-1">Total Produk</p>
                     <div class="d-inline-flex align-items-center flex-wrap gap-2">
                         <h4 class="text-white">{{ $countProduct }}</h4>
                     </div>
@@ -32,7 +32,7 @@
                     <i class="ti ti-repeat fs-24"></i>
                 </span>
                 <div class="ms-2">
-                    <p class="text-white mb-1">Total Stock</p>
+                    <p class="text-white mb-1">Total Stok</p>
                     <div class="d-inline-flex align-items-center flex-wrap gap-2">
                         <h4 class="text-white">{{ $totalStock }}</h4>
                     </div>
@@ -47,7 +47,7 @@
                     <i class="ti ti-gift fs-24"></i>
                 </span>
                 <div class="ms-2">
-                    <p class="text-white mb-1">Total Purchase</p>
+                    <p class="text-white mb-1">Total Pembelian</p>
                     <div class="d-inline-flex align-items-center flex-wrap gap-2">
                         <h4 class="text-white">{{ $totalPurchase }}</h4>
                     </div>

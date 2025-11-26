@@ -4,8 +4,8 @@
 <div class="page-header">
     <div class="add-item d-flex">
         <div class="page-title">
-            <h4 class="fw-bold">Product List</h4>
-            <h6>Manage your products</h6>
+            <h4 class="fw-bold">Daftar Produk</h4>
+            <h6>Kelola Produk Anda</h6>
         </div>
     </div>
     <ul class="table-top-head">
@@ -14,7 +14,7 @@
         </li>
     </ul>
     <div class="page-btn">
-        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Add Product</a>
+        <a href="#" class="btn btn-primary add_button" id="add_button"><i class="ti ti-circle-plus me-1"></i>Tambah Produk</a>
     </div>
 </div>
 
@@ -39,11 +39,11 @@
                                 <span class="checkmarks"></span>
                             </label>
                         </th>
-                        <th>Product Code </th>
-                        <th>Product Name</th>
-                        <th>Unit</th>
-                        <th>Category</th>
-                        <th>Stock</th>
+                        <th>SKU </th>
+                        <th>Nama Produk</th>
+                        <th>Satuan</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -63,7 +63,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="page-title">
-                    <h4>Add Product</h4>
+                    <h4>Tambah Produk</h4>
                 </div>
                 <button type="button" class="close bg-danger text-white fs-16" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -74,16 +74,16 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">SKU<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="product_code" required placeholder="SKU or Unique Code Product">
+                        <input type="text" class="form-control" name="product_code" required placeholder="SKU atau Kode Produk">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Product Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="product_name" required placeholder="Product Name">
+                        <label class="form-label">Nama Produk<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="product_name" required placeholder="Nama Produk">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Category<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Kategori Produk<span class="text-danger ms-1">*</span></label>
                         <select name="category_id" class="form-control" required>
-                            <option value="">-- Select Category --</option>
+                            <option value="">-- Pilih Kategori --</option>
                             @foreach ($category as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
@@ -91,41 +91,41 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Unit<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" name="unit" required placeholder="Tablet, Capsul, ext">
+                        <label class="form-label">Satuan<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" name="unit" required placeholder="Tablet, Capsul, dll">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Stock<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="stock" required placeholder="Initial stock">
+                        <label class="form-label">Stok Awal<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="stock" required placeholder="Stok awal">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Min Stock<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Minimal Stok<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" name="min_stock" required placeholder="Minimum stok sebelum reorder">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Selling Price<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="selling_price" required placeholder="selling price">
+                        <label class="form-label">Harga Jual<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="selling_price" required placeholder="Harga Jual">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Lead Time<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="lead_time" required placeholder="Order lead time (days)">
+                        <label class="form-label">Waktu tunggu<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="lead_time" required placeholder="Waktu tunggu pembelian (hari)">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Average Demand /month<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="average_demand" required placeholder="Average Demand /month">
+                        <label class="form-label">Rata-rata Permintaan /bulan<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="average_demand" required placeholder="Rata-rata Permintaan /bulan">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Ordering Cost</label>
-                        <input type="number" class="form-control" name="ordering_cost"  placeholder="Ordering Cost">
+                        <label class="form-label">Biaya Pemesanan</label>
+                        <input type="number" class="form-control" name="ordering_cost"  placeholder="Biaya Pemesanan">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Holding Cost (Rp)<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="holding_cost_percent"  placeholder="Holding Cost Percent">
+                        <label class="form-label">Biaya Penyimpanan (%)<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="holding_cost_percent"  placeholder="Biaya Penyimpanan Pesentase">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah Produk</button>
                 </div>
             </form>
         </div>
@@ -148,56 +148,56 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">SKU<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="product_code" name="product_code" required placeholder="SKU or Unique Code Product">
+                        <label class="form-label">SKU / Kode Produk<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="product_code" name="product_code" required placeholder="SKU atau Kode Produk">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Product Name<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="product_name" name="product_name" required placeholder="Product Name">
+                        <label class="form-label">Nama Produk<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="product_name" name="product_name" required placeholder="Nama Produk">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Category<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Kategori Produk<span class="text-danger ms-1">*</span></label>
                         <select name="category_id" id="category_id" class="form-control" required>
 
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Unit<span class="text-danger ms-1">*</span></label>
-                        <input type="text" class="form-control" id="unit" name="unit" required placeholder="Tablet, Capsul, ext">
+                        <label class="form-label">Satuan<span class="text-danger ms-1">*</span></label>
+                        <input type="text" class="form-control" id="unit" name="unit" required placeholder="Tablet, Capsul, sll">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Stock<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" id="stock" name="stock" required placeholder="Initial stock">
+                        <label class="form-label">Stok<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" id="stock" name="stock" required placeholder="Stok Awal">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Min Stock<span class="text-danger ms-1">*</span></label>
+                        <label class="form-label">Stok Minimal<span class="text-danger ms-1">*</span></label>
                         <input type="number" class="form-control" id="min_stock" name="min_stock" required placeholder="Minimum stok sebelum reorder">
                     </div>
                      <div class="mb-3">
-                        <label class="form-label">Selling Price<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" name="selling_price" id="selling_price" required placeholder="selling price">
+                        <label class="form-label">Harga Jual<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" name="selling_price" id="selling_price" required placeholder="Harga Jual">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Lead Time<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" id="lead_time" name="lead_time" required placeholder="Order lead time (days)">
+                        <label class="form-label">Waktu Tunggu<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" id="lead_time" name="lead_time" required placeholder="Waktu Tunggu (hari)">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Average Demand /month<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" id="average_demand" name="average_demand" required placeholder="Average Demand /month">
+                        <label class="form-label">Rata-rata Permintaan /bulan<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" id="average_demand" name="average_demand" required placeholder="Rata-rata Permintaan /bulan">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Ordering Cost</label>
-                        <input type="number" class="form-control" name="ordering_cost" id="ordering_cost"  placeholder="Ordering Cost">
+                        <label class="form-label">Biaya Pemesanan</label>
+                        <input type="number" class="form-control" name="ordering_cost" id="ordering_cost"  placeholder="Biaya Pemesanan">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Holding Cost (Rp)<span class="text-danger ms-1">*</span></label>
-                        <input type="number" class="form-control" id="holding_cost_percent" name="holding_cost_percent"  placeholder="Holding Cost Percent">
+                        <label class="form-label">Biaya Penyimpanan (%)<span class="text-danger ms-1">*</span></label>
+                        <input type="number" class="form-control" id="holding_cost_percent" name="holding_cost_percent"  placeholder="Biaya Penyimpanan (%)">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Perbarui Produk</button>
                 </div>
             </form>
         </div>
@@ -383,8 +383,8 @@
                 var id = $(this).data('id');
                 var url = url_delete.replace(":id",id);
                 Swal.fire({
-                    title: "Delete Product?",
-                    text: "You won't be able to revert this!",
+                    title: "Hapus Produk?",
+                    text: "Anda tidak akan dapat mengembalikannya!",
                     icon: "warning",
                     width: '300px', // default-nya 500px
                     customClass: {
@@ -394,7 +394,7 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonText: "Ya, Hapus!",
                     reverseButtons: true
                   }).then((result) => {
                     if (result.isConfirmed) {

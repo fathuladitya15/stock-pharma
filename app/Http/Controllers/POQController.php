@@ -96,6 +96,7 @@ class POQController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollBack();
+            Log::info($th);
             Log::error("message" . $th->getMessage());
             return response()->json([
                 'message' => 'Something went wrong',
